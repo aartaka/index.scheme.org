@@ -331,12 +331,11 @@
   (signature
    case-lambda
    (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) list?)
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed (list? tail-mapper)) *))
+   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed (list? tail)) list?))
   (subsigs
    (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
-   (successor (lambda (seed) *))
-   (tail list?))
+   (successor (lambda (seed) *)))
   (tags pure)
   (desc . "unfold-right constructs a list with the following loop: (let lp ((seed seed) (lis tail)) (if (stop? seed) lis (lp (successor seed) (cons (mapper seed) lis)))). stop? determines when to stop unfolding. mapper maps each seed value to the corresponding list element. successor maps each seed value to next seed value. seed the \"state\" value for the unfold. tail list terminator; defaults to '(). In other words, we use successor to generate a sequence of seed values seed, successor(seed), successor2(seed), successor3(seed), ... These seed values are mapped to list elements by mapper, producing the elements of the result list in a right-to-left order. stop? says when to stop. unfold-right is the fundamental iterative list constructor, just as fold is the fundamental iterative list consumer."))
  ((name . "map")
