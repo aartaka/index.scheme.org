@@ -324,9 +324,9 @@
    (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *))
-   (tail-gen (lambda () *)))
+   (tail-mapper (lambda (seed) *)))
   (tags pure)
-  (desc . "unfold is best described by its basic recursion: (unfold stop? mapper successor seed) = (if (stop? seed) (tail-mapper seed) (cons (mapper seed) (unfold stop? mapper successor (successor seed)))). stop? determines when to stop unfolding. mapper maps each seed value to the corresponding list element. successor maps each seed value to next seed value. seed the \"state\" value for the unfold. tail-mapper creates the tail of the list; defaults to (lambda (x) '()). In other words, we use successor to mappererate a sequence of seed values seed, successor(seed), successor2(seed), successor3(seed), ... These seed values are mapped to list elements by mapper, producing the elements of the result list in a left-to-right order. stop? says when to stop. unfold is the fundamental recursive list constructor, just as fold-right is the fundamental recursive list consumer."))
+  (desc . "unfold is best described by its basic recursion: (unfold stop? mapper successor seed) = (if (stop? seed) (tail-mapper seed) (cons (mapper seed) (unfold stop? mapper successor (successor seed)))). stop? determines when to stop unfolding. mapper maps each seed value to the corresponding list element. successor maps each seed value to next seed value. seed the \"state\" value for the unfold. tail-mapper creates the tail of the list; defaults to (lambda (x) '()). In other words, we use successor to generate a sequence of seed values seed, successor(seed), successor2(seed), successor3(seed), ... These seed values are mapped to list elements by mapper, producing the elements of the result list in a left-to-right order. stop? says when to stop. unfold is the fundamental recursive list constructor, just as fold-right is the fundamental recursive list consumer."))
  ((name . "unfold-right")
   (signature
    case-lambda
@@ -336,9 +336,9 @@
    (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *))
-   (tail-mapper (lambda () *)))
+   (tail list?))
   (tags pure)
-  (desc . "unfold-right constructs a list with the following loop: (let lp ((seed seed) (lis tail)) (if (stop? seed) lis (lp (successor seed) (cons (mapper seed) lis)))). stop? determines when to stop unfolding. mapper maps each seed value to the corresponding list element. successor maps each seed value to next seed value. seed the \"state\" value for the unfold. tail list terminator; defaults to '(). In other words, we use successor to mappererate a sequence of seed values seed, successor(seed), successor2(seed), successor3(seed), ... These seed values are mapped to list elements by mapper, producing the elements of the result list in a right-to-left order. stop? says when to stop. unfold-right is the fundamental iterative list constructor, just as fold is the fundamental iterative list consumer."))
+  (desc . "unfold-right constructs a list with the following loop: (let lp ((seed seed) (lis tail)) (if (stop? seed) lis (lp (successor seed) (cons (mapper seed) lis)))). stop? determines when to stop unfolding. mapper maps each seed value to the corresponding list element. successor maps each seed value to next seed value. seed the \"state\" value for the unfold. tail list terminator; defaults to '(). In other words, we use successor to generate a sequence of seed values seed, successor(seed), successor2(seed), successor3(seed), ... These seed values are mapped to list elements by mapper, producing the elements of the result list in a right-to-left order. stop? says when to stop. unfold-right is the fundamental iterative list constructor, just as fold is the fundamental iterative list consumer."))
  ((name . "map")
   (signature lambda ((procedure? proc) (list? list1) (list? list2) ...) list?)
   (subsigs (proc (lambda (obj1 obj2 ...) *)))
