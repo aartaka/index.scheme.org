@@ -2,7 +2,7 @@ name: 'Render and deploy docs'
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 permissions:
