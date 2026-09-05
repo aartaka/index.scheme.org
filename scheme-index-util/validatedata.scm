@@ -21,11 +21,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 |#
-(import (chicken file)
-        (chicken process-context)
-        json
-        matchable
-        srfi-1)
+(cond-expand
+  (chicken-6
+   (import (scheme base)
+           (scheme file)
+           (scheme process-context)
+           (chicken process-context)
+           json
+           matchable
+           srfi-1))
+  (chicken-5
+   (import (chicken file)
+           (chicken process-context)
+           json
+           matchable
+           srfi-1)))
 
 (cond-expand
   (chicken-6
@@ -35,8 +45,10 @@ SOFTWARE.
 (define (main)
   (define filters-index-file-name (list-ref (command-line-arguments) 0))
   (define types-index-file-name (list-ref (command-line-arguments) 1))
+  (define faux-types-file-name (list-ref (command-line-arguments) 2))
   (process-filters-index filters-index-file-name)
-  (process-types-index types-index-file-name))
+  (parameterize ((*faux-types* (process-faux-types faux-types-file-name)))
+      (process-types-index types-index-file-name)))
 
 (define (->string obj)
   (let ((out (open-output-string)))
@@ -45,15 +57,27 @@ SOFTWARE.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(define (predicate-symbol? x)
+  (and (symbol? x)
+       (let ((str (symbol->string x)))
+         (char=? #\? (string-ref str (- (string-length str) 1))))))
+
+(define *faux-types* (make-parameter '()))
+
+(define (faux-type-symbol? x)
+  (and (symbol? x)
+       (or (memq x '(* undefined ...))
+           (memq x (*faux-types*)))))
+
 (define (process-filters-index index-file-name)
   (define (assoc/assert-string key alist)
     (cond
-      ((assoc key alist) => (lambda (p)
-                               (define v (cdr p))
-                               (unless (string? v)
-                                 (error (string-append "Key " (->string key) " doesn't map to string value; was " (->string v))))
-                               v))
-      (else (error (string-append "Missing key " (->string key))))))
+     ((assoc key alist) => (lambda (p)
+                             (define v (cdr p))
+                             (unless (string? v)
+                               (error (string-append "Key " (->string key) " doesn't map to string value; was " (->string v))))
+                             v))
+     (else (error (string-append "Missing key " (->string key))))))
   (define (process-filter filter)
     (unless (list? filter)
       (error (string-append "Filter entry not a list; was " (->string filter))))
@@ -64,10 +88,10 @@ SOFTWARE.
       (unless (list? content)
         (error (string-append "Filter file " file " doesn't contain a list")))
       (for-each
-        (lambda (e)
-          (unless (pair? e)
-            (error (string-append "Entry in filter file " file " is not a pair; was " (->string e)))))
-        content)))
+       (lambda (e)
+         (unless (pair? e)
+           (error (string-append "Entry in filter file " file " is not a pair; was " (->string e)))))
+       content)))
 
   (define filters (with-input-from-file index-file-name read))
 
@@ -156,7 +180,7 @@ SOFTWARE.
   (match s
     (((? symbol?) signature)
      (validate-sig signature))
-    (_ (error "Unknown subsignature shape"))))
+    (_ (error "Unknown subsignature shape" s))))
 
 (define (validate-sig s)
   (match s
@@ -192,8 +216,9 @@ SOFTWARE.
   (define (validate-type t)
     (match t
       (#f #t)
-      ((? symbol?) #t)
-      (_ (error "Unknown type"))))
+      ((? predicate-symbol?) #t)
+      ((? faux-type-symbol?) #t)
+      (_ (error "Unknown type" t))))
   (match param
     ((('or types ...) (? symbol? name))
      (for-each validate-type types))
@@ -201,7 +226,7 @@ SOFTWARE.
      (validate-type type))
     ((? symbol? name)
      #t)
-    (_ (error "Unknown param shape"))))
+    (_ (error "Unknown param shape" param))))
 
 (define (validate-function-return return)
   (match return
@@ -209,15 +234,30 @@ SOFTWARE.
      (for-each validate-function-return returns))
     (('or returns ...)
      (for-each validate-function-return returns))
-    ((? symbol?)
-     #t)
     (#f
      #t)
-    (_ (error "Unknown return shape"))))
+    ((? predicate-symbol?)
+     #t)
+    ((? faux-type-symbol?)
+     #t)
+    (_ (error "Unknown return shape" return))))
 
 (define (validate-syntax-rule-pattern pattern)
   (match pattern
     ((p) #t)
     ((p return-type) (validate-function-return return-type))))
+
+(define (process-faux-types filename)
+  (define content (with-input-from-file filename read))
+  (unless (list? content)
+      (error "faux-type file is not an alist"))
+  (for-each
+    (lambda (e)
+      (unless (and (pair? e)
+                   (symbol? (car e))
+                   (string? (cdr e)))
+        (error (string-append "Bad faux-type entry, was " (->string e)))))
+    content)
+  (map car content))
 
 (main)
