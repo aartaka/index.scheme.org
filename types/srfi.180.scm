@@ -1,5 +1,5 @@
-(((name . "json-write obj")
-  (signature case-lambda 
+(((name . "json-write")
+  (signature case-lambda
              ((obj) undefined)
              ((obj ((or port? procedure?) port-or-accumulator)) undefined))
   (desc . "JSON writer procedure. PORT-OR-ACCUMULATOR must be a textual output port, or an accumulator that accepts characters and strings. The default value of PORT-OR-ACCUMULATOR is the value returned by the procedure current-output-port. The value returned by json-write is unspecified.
@@ -16,17 +16,17 @@ json-write will validate that OBJ can be serialized into JSON before writing to 
 
 Mind the fact that most JSON parsers have a nesting limit that is not documented by the standard. Even if you can produce arbitrarily nested JSON with this library, you might not be able to read it with another library."))
  ((name . "json-sequence-read")
-  (signature case-lambda 
+  (signature case-lambda
              (() procedure?)
              ((((or port? procedure?) port-or-generator)) procedure?))
   (desc . "JSON reader of JSON Text Sequences (RFC 7464). As its first and only argument, it takes a generator of characters or a textual input port whose default value is the value returned by current-input-port. It will return a generator of Scheme objects as specified in json-read."))
  ((name . "json-lines-read")
-  (signature case-lambda 
+  (signature case-lambda
              (() procedure?)
              ((((or port? generator?) port-or-generator)) procedure?))
   (desc . "JSON reader of jsonlines or ndjson. As its first and only argument, it takes a generator of characters or a textual input port whose default value is the value returned by current-input-port. It will return a generator of Scheme objects as specified in json-read."))
  ((name . "json-read")
-  (signature case-lambda 
+  (signature case-lambda
              (() *)
              ((((or port? procedure?) port-or-generator)) *))
   (desc . "JSON reader procedure. PORT-OR-GENERATOR must be a textual input port or a generator of characters. The default value of PORT-OR-GENERATOR is the value returned by the procedure current-input-port. The returned value is a Scheme object. json-read must return only the first toplevel JSON value or structure. When there are multiple toplevel values or structures in PORT-OR-GENERATOR, the user should call json-read several times to read all of it.
@@ -42,7 +42,7 @@ The mapping between JSON types and Scheme objects is the following:
 
 In the case where nesting of arrays or objects reaches the value returned by the parameter json-nesting-depth-limit, json-read must raise an object that satisfies the predicate json-error?"))
  ((name . "json-fold")
-  (signature case-lambda 
+  (signature case-lambda
              (((procedure? proc) (procedure? array-start) (procedure? array-end) (procedure? object-start) (procedure? object-end) seed) *)
              (((procedure? proc) (procedure? array-start) (procedure? array-end) (procedure? object-start) (procedure? object-end) seed ((or port? procedure?) port-or-generator)) *))
   (subsigs
@@ -65,7 +65,7 @@ json-fold must return the seed when:
 * PORT-OR-GENERATOR yields an object that satisfies the predicate eof-object?
 * All structures, array or object, that were started have ended. The returned object is (PROC obj SEED) where obj is the object returned by ARRAY-END or OBJECT-END"))
  ((name . "json-generator")
-  (signature case-lambda 
+  (signature case-lambda
              (() procedure?)
              ((((or port? procedure?) port-or-generator)) procedure?))
   (desc . "Streaming event-based JSON reader. PORT-OR-GENERATOR default value is the value returned by current-input-port. It must be a textual input port or a generator of characters. json-generator returns a generator of Scheme objects, each of which must be one of:
