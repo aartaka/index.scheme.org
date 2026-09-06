@@ -18,7 +18,7 @@ The following standard procedures have pre-defined setters:
 (set! (string-ref x i) v) == (string-set! x i v)
 (set! (vector-ref x i) v) == (vector-set! x i v)
         "))
- ((name . "setter") 
+ ((name . "setter")
   (signature lambda ((procedure? proc)) procedure?)
   (desc . "Returns an associated setter procedure.  We define:
 (set! (proc arg ...) value)

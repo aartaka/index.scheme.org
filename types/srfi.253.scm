@@ -11,7 +11,7 @@
   (subsigs (predicate (lambda (obj) *)))
   (desc . "Guarantees that the values (evaluated) abide by the given predicates (the number of values and predicates should match) and returns them as multiple values. It is an error if any of the predicates returns false. Implementations may choose to coerce the values when the types are compatible (e.g. integer -> inexact)."))
  ((name . "check-case")
-  (signature syntax-rules (=> else) 
+  (signature syntax-rules (=> else)
              ((_ key (predicate expression ...) ...))
              ((_ key (predicate expression ...) ... (else expression ...))))
   (subsigs
@@ -22,7 +22,7 @@
              ((_ (arg ...) body ...)
               procedure?))
   (subsigs
-    (arg 
+    (arg
       (pattern
         name
         (name predicate)))
@@ -50,7 +50,7 @@
               procedure?)
              ((_ name predicate value)))
   (subsigs
-    (arg 
+    (arg
       (pattern
         name
         (name predicate)))

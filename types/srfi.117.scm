@@ -21,16 +21,15 @@ Note: To apply a non-destructive list procedure to a list queue and return a new
  ((name . "list-queue-unfold")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed)
     list-queue?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (list-queue? queue))
     list-queue?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *)))
   (tags pure)
@@ -40,16 +39,15 @@ If queue is omitted, a newly allocated list queue is used."))
  ((name . "list-queue-unfold-right")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed)
     list-queue?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (list-queue? queue))
     list-queue?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *)))
   (tags pure)

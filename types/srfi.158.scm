@@ -75,10 +75,9 @@ The collections need not be conventional ones (lists, strings, etc.) as long as 
  ((name . "make-unfold-generator")
   (signature
    lambda
-   ((procedure? stop?) (procedure? mapper) (procedure? successor) seed)
+   ((predicate stop?) (procedure? mapper) (procedure? successor) seed)
    procedure?)
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *))
    (return (lambda () *)))
@@ -92,13 +91,13 @@ This generator is finite unless stop? never returns true."))
   (desc . "Returns a generator that adds items in front of gen. Once the items have been consumed, the generator is guaranteed to tail-call gen."))
  ((name . "gappend")
   (signature lambda ((procedure? gen) ...) procedure?)
-  (subsigs 
+  (subsigs
     (gen (lambda () *))
     (return (lambda () *)))
   (desc . "Returns a generator that yields the items from the first given generator, and once it is exhausted, from the second generator, and so on."))
  ((name . "gflatten")
   (signature lambda ((procedure? gen) ...) procedure?)
-  (subsigs 
+  (subsigs
     (gen (lambda () list?))
     (return (lambda () *)))
   (desc . "Returns a generator that yields the elements of the lists produced by the given generator."))
@@ -106,7 +105,7 @@ This generator is finite unless stop? never returns true."))
   (signature case-lambda
              (((procedure? gen) (integer? k)) procedure?)
              (((procedure? gen) (integer? k) padding) procedure?))
-  (subsigs 
+  (subsigs
     (gen (lambda () *))
     (return (lambda () (or list? eof-object?))))
   (desc . "Returns a generator that yields lists of k items from the given generator. If fewer than k elements are available for the last list, and padding is absent, the short list is returned; otherwise, it is padded by padding to length k."))
@@ -137,16 +136,14 @@ Note: This differs from generator-map->list, which consumes all values at once a
   (desc . "A generator for mapping with state. It yields a sequence of sub-folds over proc.
 The proc argument is a procedure that takes as many arguments as the input generators plus one. It is called as (proc v1 v2 … seed), where v1, v2, … are the values yielded from the input generators, and seed is the current seed value. It must return two values, the yielding value and the next seed. The result generator is exhausted when any of the genn generators is exhausted, at which time all the others are in an undefined state."))
  ((name . "gfilter")
-  (signature lambda ((procedure? pred) (procedure? gen)) procedure?)
+  (signature lambda ((predicate pred) (procedure? gen)) procedure?)
   (subsigs
-   (pred (lambda (element) boolean?))
    (gen (lambda () *))
    (return (lambda () *)))
   (desc . "Returns generators that yield the items from the source generator, except those on which pred answers false."))
  ((name . "gremove")
-  (signature lambda ((procedure? pred) (procedure? gen)) procedure?)
+  (signature lambda ((predicate pred) (procedure? gen)) procedure?)
   (subsigs
-   (pred (lambda (element) boolean?))
    (gen (lambda () *))
    (return (lambda () *)))
   (desc . "Returns generators that yield the items from the source generator, except those on which pred answers true."))
@@ -170,16 +167,14 @@ The procedure won't complain if the source generator is exhausted before generat
   (subsigs (gen (lambda () *)) (return (lambda () *)))
   (desc . "Gdrop returns a generator that skips the first k items of the source generator. The procedure won't complain if the source generator is exhausted before generating k items."))
  ((name . "gtake-while")
-  (signature lambda ((procedure? pred) (procedure? gen)) procedure?)
+  (signature lambda ((predicate pred) (procedure? gen)) procedure?)
   (subsigs
-   (pred (lambda (element) boolean?))
    (gen (lambda () *))
    (return (lambda () *)))
   (desc . "The generator returned from gtake-while yields items from the source generator as long as pred returns true for each."))
  ((name . "gdrop-while")
-  (signature lambda ((procedure? pred) (procedure? gen)) procedure?)
+  (signature lambda ((predicate pred) (procedure? gen)) procedure?)
   (subsigs
-   (pred (lambda (element) boolean?))
    (gen (lambda () *))
    (return (lambda () *)))
   (desc . "The generator returned from gdrop-while first reads and discards values from the source generator while pred returns true for them, then starts yielding items returned by the source."))
@@ -274,39 +269,42 @@ When more than one generator is given, proc is invoked on the values returned by
   (desc . "A generator analogue of for-each that consumes generated values using side effects. Repeatedly applies proc on the values yielded by gen, gen2 … until any one of the generators is exhausted, at which time all the others are in an undefined state. The values returned from proc are discarded. Returns an unspecified value."))
  ((name . "generator-map->list")
   (signature lambda ((procedure? proc) (procedure? gen1) (procedure? gen2) ...) list?)
-  (subsigs 
+  (subsigs
     (proc (lambda (element) *))
     (generator (lambda () *)))
   (desc . "A generator analogue of map that consumes generated values, processes them through a mapping function, and returns a list of the mapped values. Repeatedly applies proc on the values yielded by gen, gen2 … until any one of the generators is exhausted, at which time all the others are in an undefined state. The values returned from proc are accumulated into a list, which is returned."))
  ((name . "generator-find")
-  (signature lambda ((procedure? pred) (procedure? generator)) *)
-  (subsigs (pred (lambda (element) boolean?)) (generator (lambda () *)))
+  (signature lambda ((predicate pred) (procedure? generator)) *)
+  (subsigs
+   (generator (lambda () *)))
   (desc . "Applies pred to each item from gen. As soon as it yields a true value, the item is returned without consuming the rest of gen. If gen is exhausted, returns #f."))
  ((name . "generator-count")
-  (signature lambda ((procedure? pred) (procedure? generator)) integer?)
-  (subsigs (pred (lambda (element) boolean?)) (generator (lambda () *)))
+  (signature lambda ((predicate pred) (procedure? generator)) integer?)
+  (subsigs
+   (generator (lambda () *)))
   (desc . "Returns the number of items available from the generator gen that satisfy the predicate pred."))
  ((name . "generator-any")
-  (signature lambda ((procedure? pred) (procedure? generator)) *)
-  (subsigs (pred (lambda (element) boolean?)) (generator (lambda () *)))
+  (signature lambda ((predicate pred) (procedure? generator)) *)
+  (subsigs
+   (generator (lambda () *)))
   (desc . "Applies pred to each item from gen. As soon as it yields a true value, the value is returned without consuming the rest of gen. If gen is exhausted, returns #f."))
  ((name . "generator-every")
-  (signature lambda ((procedure? pred) (procedure? generator)) *)
-  (subsigs (pred (lambda (element) boolean?)) (generator (lambda () *)))
+  (signature lambda ((predicate pred) (procedure? generator)) *)
+  (subsigs
+   (generator (lambda () *)))
   (desc . "Applies pred to each item from gen. As soon as it yields a false value, the value is returned without consuming the rest of gen. If gen is exhausted, returns the last value returned by pred, or #t if pred was never called."))
  ((name . "generator-unfold")
   (signature lambda ((procedure? gen) (procedure? unfold) arg ...) *)
   (subsigs
    (gen (lambda () *))
    (unfold
-    (lambda ((procedure? stop?)
+    (lambda ((predicate stop?)
              (procedure? mapper)
              (procedure? successor)
              seed
              args
              ...)
       *))
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *)))
   (desc . "Equivalent to (unfold eof-object? (lambda (x) x) (lambda (x) (gen)) (gen) arg ...). The values of gen are unfolded into the collection that unfold creates.

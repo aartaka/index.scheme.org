@@ -2,7 +2,7 @@
   (signature lambda (obj) boolean?)
   (tags pure predicate)
   (desc . "The dynamic-extent? procedure returns #t if its argument is a dynamic extent, and #f otherwise. Note that dynamic extents are not necessarily disjoint from other Scheme types such as procedures."))
- ((name . "current-dynamic-extent") 
+ ((name . "current-dynamic-extent")
   (signature lambda () dynamic-extent?)
   (desc . "The current-dynamic-extent procedure returns the current dynamic extent by capturing the dynamic extent of the call to current-dynamic-extent, which can be reinstated by the procedure with-dynamic-extent."))
  ((name . "with-dynamic-extent")

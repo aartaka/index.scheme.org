@@ -84,20 +84,17 @@ Stream-constant takes one or more objects and returns a newly-allocated stream c
   (desc . "nat × {α} → {α}
 Stream-drop returns the suffix of the input stream that starts at the next element after the first n elements. The output stream shares structure with the input stream; thus, promises forced in one instance of the stream are also forced in the other instance of the stream. If the input stream has less than n elements, stream-drop returns the null stream. See also stream-take."))
  ((name . "stream-drop-while")
-  (signature lambda ((procedure? pred?) (stream? stream)) stream?)
-  (subsigs (pred? (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred?) (stream? stream)) stream?)
   (tags pure)
   (desc . "(α → boolean) × {α} → {α}
 Stream-drop-while returns the suffix of the input stream that starts at the first element x for which (pred? x) is #f. The output stream shares structure with the input stream. See also stream-take-while."))
  ((name . "stream-filter")
-  (signature lambda ((procedure? pred?) (stream? stream)) stream?)
-  (subsigs (pred? (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred?) (stream? stream)) stream?)
   (tags pure)
   (desc . "(α → boolean) × {α} → {α}
 Stream-filter returns a newly-allocated stream that contains only those elements x of the input stream for which (pred? x) is non-#f."))
  ((name . "stream-fold")
-  (signature lambda ((procedure? proc) base (stream? stream)) *)
-  (subsigs (proc (lambda (base element) *)))
+  (signature lambda ((predicate proc) base (stream? stream)) *)
   (tags pure)
   (desc . "(α × β → α) × α × {β} → α
 Stream-fold applies a binary procedure to base and the first element of stream to compute a new base, then applies the procedure to the new base and the next element of stream to compute a succeeding base, and so on, accumulating a value that is finally returned as the value of stream-fold when the end of the stream is reached. Stream must be finite, or stream-fold will enter an infinite loop. See also stream-scan, which is similar to stream-fold, but useful for infinite streams. For readers familiar with other functional languages, this is a left-fold; there is no corresponding right-fold, since right-fold relies on finite streams that are fully-evaluated, at which time they may as well be converted to a list."))
@@ -192,19 +189,17 @@ Stream-scan accumulates the partial folds of an input stream into a newly-alloca
   (desc . "nat × {α} → {α}
 Stream-take takes a non-negative integer n and a stream and returns a newly-allocated stream containing the first n elements of the input stream. If the input stream has less than n elements, so does the output stream. See also stream-drop."))
  ((name . "stream-take-while")
-  (signature lambda ((procedure? pred?) (stream? stream)) stream?)
-  (subsigs (pred? (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred?) (stream? stream)) stream?)
   (tags pure)
   (desc . "(α → boolean) × {α} → {α}
 Stream-take-while takes a predicate and a stream and returns a newly-allocated stream containing those elements x that form the maximal prefix of the input stream for which (pred? x) is non-#f. See also stream-drop-while."))
  ((name . "stream-unfold")
   (signature
    lambda
-   ((procedure? map) (procedure? pred?) (procedure? gen) base)
+   ((procedure? map) (predicate pred?) (procedure? gen) base)
    stream?)
   (subsigs
    (map (lambda (base) *))
-   (pred? (lambda (base) boolean?))
    (gen (lambda (base) *)))
   (tags pure)
   (desc . "(α → β) × (α → boolean) × (α → α) × α → {β}

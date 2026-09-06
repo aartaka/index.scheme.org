@@ -184,9 +184,8 @@ cmp should be a procedure of two arguments and return a negative integer, which 
  ((name . "vector-partition")
   (signature
    lambda
-   ((procedure? pred?) (vector? vec))
+   ((predicate pred?) (vector? vec))
    (values vector? integer?))
-  (subsigs (pred? (lambda (obj) boolean?)))
   (tags pure)
   (desc . "A vector the same size as vec is newly allocated and filled with all the elements of vec that satisfy pred? in their original order followed by all the elements that do not satisfy pred?, also in their original order.
 Two values are returned, the newly allocated vector and the index of the leftmost element that does not satisfy pred?."))

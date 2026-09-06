@@ -9,27 +9,25 @@
  ((name . "string-every")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) *)
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start)) *)
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c) (string? s)) *)
+   ((((or char? char-set? predicate) c) (string? s) (integer? start)) *)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     *))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Checks to see if the given criteria is true of every character in s, proceeding from left (index start) to right (index end). If char/char-set/pred is a character, it is tested for equality with the elements of s. If char/char-set/pred is a character set, the elements of s are tested for membership in the set. If char/char-set/pred is a predicate procedure, it is applied to the elements of s. The predicate is \"witness-generating:\". If string-every returns true, the returned true value is the one produced by the final application of the predicate to s[end-1]. If string-every is applied to an empty sequence of characters, it simply returns #t. If string-every applies the predicate to the final element of the selected sequence (i.e., s[end-1]), that final application is a tail call."))
  ((name . "string-any")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) *)
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start)) *)
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c) (string? s)) *)
+   ((((or char? char-set? predicate) c) (string? s) (integer? start)) *)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     *))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Checks to see if the given criteria is true of every character in s, proceeding from left (index start) to right (index end). If char/char-set/pred is a character, it is tested for equality with the elements of s. If char/char-set/pred is a character set, the elements of s are tested for membership in the set. If char/char-set/pred is a predicate procedure, it is applied to the elements of s. The predicate is \"witness-generating:\". If string-any returns true, the returned true value is the one produced by the application of the predicate. If string-any is applied to an empty sequence of characters, it simply returns #t. If string-every applies the predicate to the final element of the selected sequence (i.e., s[end-1]), that final application is a tail call."))
  ((name . "make-string")
@@ -39,7 +37,7 @@
    (((integer? k) (char? char)) string?))
   (tags pure)
   (desc . "make-string returns a newly allocated string of length len. If char is given, then all elements of the string are initialized to char, otherwise the contents of the string are unspecified."))
- ((name . "string") 
+ ((name . "string")
   (signature lambda ((char? char) ...) string?)
   (tags pure)
   (desc . "Returns a newly allocated string composed of the argument characters."))
@@ -151,14 +149,13 @@ The delimiter is the string used to delimit elements; it defaults to a single sp
  ((name . "string-trim")
   (signature
    case-lambda
-   (((string? s) ((or char? char-set? procedure?) c)) string?)
-   (((string? s) ((or char? char-set? procedure?) c) (integer? start)) string?)
+   (((string? s) ((or char? char-set? predicate) c)) string?)
+   (((string? s) ((or char? char-set? predicate) c) (integer? start)) string?)
    (((string? s)
-     ((or char? char-set? procedure?) c)
+     ((or char? char-set? predicate) c)
      (integer? start)
      (integer? end))
     string?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Trim s by skipping over all characters on the left that satisfy the second parameter char/char-set/pred:
 * if it is a character char, characters equal to char are trimmed;
@@ -168,14 +165,13 @@ Char/char-set/pred defaults to the character set char-set:whitespace defined in 
  ((name . "string-trim-right")
   (signature
    case-lambda
-   (((string? s) ((or char? char-set? procedure?) c)) string?)
-   (((string? s) ((or char? char-set? procedure?) c) (integer? start)) string?)
+   (((string? s) ((or char? char-set? predicate) c)) string?)
+   (((string? s) ((or char? char-set? predicate) c) (integer? start)) string?)
    (((string? s)
-     ((or char? char-set? procedure?) c)
+     ((or char? char-set? predicate) c)
      (integer? start)
      (integer? end))
     string?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Trim s by skipping over all characters on the right that satisfy the second parameter char/char-set/pred:
 * if it is a character char, characters equal to char are trimmed;
@@ -185,14 +181,13 @@ Char/char-set/pred defaults to the character set char-set:whitespace defined in 
  ((name . "string-trim-both")
   (signature
    case-lambda
-   (((string? s) ((or char? char-set? procedure?) c)) string?)
-   (((string? s) ((or char? char-set? procedure?) c) (integer? start)) string?)
+   (((string? s) ((or char? char-set? predicate) c)) string?)
+   (((string? s) ((or char? char-set? predicate) c) (integer? start)) string?)
    (((string? s)
-     ((or char? char-set? procedure?) c)
+     ((or char? char-set? predicate) c)
      (integer? start)
      (integer? end))
     string?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Trim s by skipping over all characters on both sides that satisfy the second parameter char/char-set/pred:
 * if it is a character char, characters equal to char are trimmed;
@@ -749,15 +744,14 @@ Char/char-set/pred defaults to the character set char-set:whitespace defined in 
  ((name . "string-index")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) (or integer? #f))
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start))
+   ((((or char? char-set? predicate) c) (string? s)) (or integer? #f))
+   ((((or char? char-set? predicate) c) (string? s) (integer? start))
     (or integer? #f))
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     (or integer? #f)))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "string-index searches through the string from the left, returning the index of the first occurrence of a character which
 * equals char/char-set/pred (if it is a character);
@@ -767,15 +761,14 @@ If no match is found, the functions return false. The start and end parameters s
  ((name . "string-index-right")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) (or integer? #f))
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start))
+   ((((or char? char-set? predicate) c) (string? s)) (or integer? #f))
+   ((((or char? char-set? predicate) c) (string? s) (integer? start))
     (or integer? #f))
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     (or integer? #f)))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "string-index-right searches through the string from the right, returning the index of the first occurrence of a character which
 * equals char/char-set/pred (if it is a character);
@@ -785,15 +778,14 @@ If no match is found, the functions return false. The start and end parameters s
  ((name . "string-skip")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) (or integer? #f))
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start))
+   ((((or char? char-set? predicate) c) (string? s)) (or integer? #f))
+   ((((or char? char-set? predicate) c) (string? s) (integer? start))
     (or integer? #f))
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     (or integer? #f)))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "string-skip searches through the string from the left, returning the index of the first occurrence of a character which doesn't
 * equals char/char-set/pred (if it is a character);
@@ -803,15 +795,14 @@ If no match is found, the functions return false. The start and end parameters s
  ((name . "string-skip-right")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) (or integer? #f))
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start))
+   ((((or char? char-set? predicate) c) (string? s)) (or integer? #f))
+   ((((or char? char-set? predicate) c) (string? s) (integer? start))
     (or integer? #f))
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     (or integer? #f)))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "string-skip-right searches through the string from the right, returning the index of the first occurrence of a character which doesn't
 * equals char/char-set/pred (if it is a character);
@@ -821,14 +812,13 @@ If no match is found, the functions return false. The start and end parameters s
  ((name . "string-count")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) integer?)
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start)) integer?)
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c) (string? s)) integer?)
+   ((((or char? char-set? predicate) c) (string? s) (integer? start)) integer?)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     integer?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Return a count of the number of characters in s that satisfy the char/char-set/pred argument. If this argument is a procedure, it is applied to the character as a predicate; if it is a character set, the character is tested for membership; if it is a character, it is used in an equality test."))
  ((name . "string-contains")
@@ -1005,9 +995,9 @@ If no match is found, the functions return false. The start and end parameters s
  ((name . "string-unfold")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) string?)
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed (string? base)) string?)
-   (((procedure? stop?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) string?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed (string? base)) string?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -1015,7 +1005,6 @@ If no match is found, the functions return false. The start and end parameters s
      (procedure? make-final))
     string?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *))
    (make-final (lambda (seed) string?)))
@@ -1030,9 +1019,9 @@ The final string constructed does not share storage with either base or the valu
  ((name . "string-unfold-right")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) string?)
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed (string? base)) string?)
-   (((procedure? stop?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) string?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed (string? base)) string?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -1040,7 +1029,6 @@ The final string constructed does not share storage with either base or the valu
      (procedure? make-final))
     string?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *))
    (make-final (lambda (seed) string?)))
@@ -1139,27 +1127,25 @@ This function provides a minimal parsing facility for simple applications. More 
  ((name . "string-filter")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) string?)
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start)) string?)
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c) (string? s)) string?)
+   ((((or char? char-set? predicate) c) (string? s) (integer? start)) string?)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     string?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Filter the string s, retaining only those characters that satisfy the char/char-set/pred argument. If this argument is a procedure, it is applied to the character as a predicate; if it is a char-set, the character is tested for membership; if it is a character, it is used in an equality test. If the string is unaltered by the filtering operation, the function may return either s or a copy of s."))
  ((name . "string-delete")
   (signature
    case-lambda
-   ((((or char? char-set? procedure?) c) (string? s)) string?)
-   ((((or char? char-set? procedure?) c) (string? s) (integer? start)) string?)
-   ((((or char? char-set? procedure?) c)
+   ((((or char? char-set? predicate) c) (string? s)) string?)
+   ((((or char? char-set? predicate) c) (string? s) (integer? start)) string?)
+   ((((or char? char-set? predicate) c)
      (string? s)
      (integer? start)
      (integer? end))
     string?))
-  (subsigs (c (lambda ((char? char)) *)))
   (tags pure)
   (desc . "Filter the string s, retaining only those characters that do not satisfy the char/char-set/pred argument. If this argument is a procedure, it is applied to the character as a predicate; if it is a char-set, the character is tested for membership; if it is a character, it is used in an equality test. If the string is unaltered by the filtering operation, the function may return either s or a copy of s."))
  ((name . "string-parse-start+end")

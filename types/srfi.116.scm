@@ -5,16 +5,16 @@
   (signature lambda (a d) ipair?)
   (tags pure)
   (desc . "The primitive constructor. Returns a newly allocated ipair whose icar is a and whose icdr is d. The ipair is guaranteed to be different (in the sense of eqv?) from every existing object."))
- ((name . "ilist") 
+ ((name . "ilist")
   (signature lambda (object ...) ilist?)
   (tags pure)
   (desc . "Returns a newly allocated ilist of its arguments."))
- ((name . "xipair") 
+ ((name . "xipair")
   (signature lambda (d a) ipair?)
   (tags pure)
   (desc . "(lambda (d a) (ipair a d))
 Of utility only as a value to be conveniently passed to higher-order procedures."))
- ((name . "ipair*") 
+ ((name . "ipair*")
   (signature lambda (elt1 elt2 ...) *)
   (tags pure)
   (desc . "Like ilist, but the last argument provides the tail of the constructed ilist"))
@@ -58,7 +58,7 @@ More carefully: The empty list is a proper ilist. An ipair whose icdr is a prope
   (signature lambda (obj) boolean?)
   (tags pure predicate)
   (desc . "True if x is a finite, non-nil-terminated ilist. That is, there exists an n >= 0 such that icdrn(x) is neither an ipair nor (). This includes non-ipair, non-() values (e.g. symbols, numbers), which are considered to be dotted ilists of length 0."))
- ((name . "ipair?") 
+ ((name . "ipair?")
   (signature lambda (obj) boolean?)
   (tags pure predicate)
   (desc . "Returns #t if object is an ipair; otherwise, #f."))
@@ -189,7 +189,7 @@ This can, of course, be implemented more efficiently by a compiler."))
   (tags pure)
   (desc . "isplit-at splits the ilist x at index i, returning an ilist of the first i elements, and the remaining tail. It is equivalent to
 (values (itake x i) (idrop x i))"))
- ((name . "ilast") 
+ ((name . "ilast")
   (signature lambda ((ilist? ipair)) *)
   (tags pure)
   (desc . "Returns the last element of the non-empty, possibly dotted, ilist ipair."))
@@ -197,7 +197,7 @@ This can, of course, be implemented more efficiently by a compiler."))
   (signature lambda ((ilist? ipair)) ipair?)
   (tags pure)
   (desc . "last-ipair returns the last ipair in the non-empty ilist pair."))
- ((name . "ilength") 
+ ((name . "ilength")
   (signature lambda ((ilist? ilist)) integer?)
   (tags pure)
   (desc . "Returns the length of its argument. It is an error to pass a value to ilength which is not a proper ilist (()-terminated).
@@ -221,7 +221,7 @@ or, equivalently,
 
 Note that some Scheme implementations do not support passing more than a certain number (e.g., 64) of arguments to an n-ary procedure. In these implementations, the (iapply iappend ...) idiom would fail when applied to long lists, but iconcatenate would continue to function properly.
 As with iappend, the last element of the input list may be any value at all."))
- ((name . "ireverse") 
+ ((name . "ireverse")
   (signature lambda ((ilist? ilist)) ilist?)
   (tags pure)
   (desc . "Returns a newly allocated ilist consisting of the elements of ilist in reverse order."))
@@ -258,9 +258,8 @@ If izip is passed n ilists, it returns an ilist as long as the shortest of these
  ((name . "icount")
   (signature
    lambda
-   ((procedure? pred) (ilist? ilist1) (ilist? ilist2) ...)
+   ((predicate pred) (ilist? ilist1) (ilist? ilist2) ...)
    integer?)
-  (subsigs (pred (lambda (obj ...) *)))
   (tags pure)
   (desc . "pred is a procedure taking as many arguments as there are ilists and returning a single value. It is applied element-wise to the elements of the ilists, and a count is tallied of the number of elements that produce a true value. This count is returned. count is \"iterative\" in that it is guaranteed to apply pred to the ilist elements in a left-to-right order. The counting stops when the shortest ilist expires."))
  ((name . "ifold")
@@ -331,12 +330,11 @@ Note that ridentity is used only in the empty-list case. You typically use iredu
  ((name . "iunfold")
   (signature
    case-lambda
-   (((procedure? p) (procedure? f) (procedure? g) seed) ilist?)
-   (((procedure? p) (procedure? f) (procedure? g) seed (ilist? tail-gen)) *))
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) ilist?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed (ilist? tail-gen)) *))
   (subsigs
-   (p (lambda (seed) boolean?))
-   (f (lambda (seed) *))
-   (g (lambda (seed) *))
+   (mapper (lambda (seed) *))
+   (successor (lambda (seed) *))
    (tail-gen (lambda () *)))
   (tags pure)
   (desc . "iunfold is best described by its basic recursion:
@@ -345,11 +343,11 @@ Note that ridentity is used only in the empty-list case. You typically use iredu
         (ipair (f seed)
               (iunfold p f g (g seed))))
 
-p: Determines when to stop unfolding. 
-f: Maps each seed value to the corresponding ilist element. 
-g: Maps each seed value to next seed value. 
-seed: The \"state\" value for the unfold. 
-tail-gen: Creates the tail of the ilist; defaults to (lambda (x) '()) 
+p: Determines when to stop unfolding.
+f: Maps each seed value to the corresponding ilist element.
+g: Maps each seed value to next seed value.
+seed: The \"state\" value for the unfold.
+tail-gen: Creates the tail of the ilist; defaults to (lambda (x) '())
 
 In other words, we use g to generate a sequence of seed values
 seed, g(seed), g^2(seed), g^3(seed), ...
@@ -357,12 +355,11 @@ These seed values are mapped to ilist elements by f, producing the elements of t
  ((name . "iunfold-right")
   (signature
    case-lambda
-   (((procedure? p) (procedure? f) (procedure? g) seed) ilist?)
-   (((procedure? p) (procedure? f) (procedure? g) seed (ilist? tail-gen)) *))
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) ilist?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed (ilist? tail-gen)) *))
   (subsigs
-   (p (lambda (seed) boolean?))
-   (f (lambda (seed) *))
-   (g (lambda (seed) *))
+   (mapper (lambda (seed) *))
+   (successor (lambda (seed) *))
    (tail-gen (lambda () *)))
   (tags pure)
   (desc . "iunfold-right constructs an ilist with the following loop:
@@ -371,11 +368,11 @@ These seed values are mapped to ilist elements by f, producing the elements of t
       (lp (g seed)
           (ipair (f seed) lis))))
 
-p: Determines when to stop unfolding. 
-f: Maps each seed value to the corresponding ilist element. 
-g: Maps each seed value to next seed value. 
-seed: The \"state\" value for the unfold. 
-tail: ilist terminator; defaults to '(). 
+p: Determines when to stop unfolding.
+f: Maps each seed value to the corresponding ilist element.
+g: Maps each seed value to next seed value.
+seed: The \"state\" value for the unfold.
+tail: ilist terminator; defaults to '().
 
 In other words, we use g to generate a sequence of seed values
 seed, g(seed), g2(seed), g3(seed), ...
@@ -431,54 +428,45 @@ The dynamic order in which the various applications of f are made is not specifi
   (tags pure)
   (desc . "Like imap, but only true values are saved."))
  ((name . "ifilter")
-  (signature lambda ((procedure? pred) (ilist? ilist)) ilist?)
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) ilist?)
   (tags pure)
   (desc . "Return all the elements of ilist that satisfy predicate pred. The ilist is not disordered — elements that appear in the result ilist occur in the same order as they occur in the argument ilist. The returned ilist may share a common tail with the argument ilist. The dynamic order in which the various applications of pred are made is not specified."))
  ((name . "ipartition")
-  (signature lambda ((procedure? pred) (ilist? ilist)) (values ilist? ilist?))
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) (values ilist? ilist?))
   (tags pure)
   (desc . "Partitions the elements of ilist with predicate pred, and returns two values: the ilist of in-elements and the ilist of out-elements. The ilist is not disordered — elements occur in the result ilists in the same order as they occur in the argument ilist. The dynamic order in which the various applications of pred are made is not specified. One of the returned ilists may share a common tail with the argument ilist."))
  ((name . "iremove")
-  (signature lambda ((procedure? pred) (ilist? ilist)) ilist?)
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) ilist?)
   (tags pure)
   (desc . "Returns ilist without the elements that satisfy predicate pred:
 (lambda (pred ilist) (ifilter (lambda (x) (not (pred x))) ilist))
 The ilist is not disordered — elements that appear in the result ilist occur in the same order as they occur in the argument ilist. The returned ilist may share a common tail with the argument ilist. The dynamic order in which the various applications of pred are made is not specified."))
  ((name . "ifind")
-  (signature lambda ((procedure? pred) (ilist? ilist)) *)
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) *)
   (tags pure)
   (desc . "Return the first element of ilist that satisfies predicate pred; false if no element does.
 (ifind even? (iq 3 1 4 1 5 9)) => 4
 Note that ifind has an ambiguity in its lookup semantics — if ifind returns #f, you cannot tell (in general) if it found a #f element that satisfied pred, or if it did not find any element at all. In many situations, this ambiguity cannot arise — either the ilist being searched is known not to contain any #f elements, or the ilist is guaranteed to have an element satisfying pred. However, in cases where this ambiguity can arise, you should use ifind-tail instead of ifind — ifind-tail has no such ambiguity"))
  ((name . "ifind-tail")
-  (signature lambda ((procedure? pred) (ilist? ilist)) (or ipair? #f))
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) (or ipair? #f))
   (tags pure)
   (desc . "Return the first ipair of ilist whose icar satisfies pred. If no ipair does, return false.
 ifind-tail can be viewed as a general-predicate variant of the imember function.
 Ifind-tail is essentially idrop-while, where the sense of the predicate is inverted: Ifind-tail searches until it finds an element satisfying the predicate; idrop-while searches until it finds an element that doesn't satisfy the predicate."))
  ((name . "itake-while")
-  (signature lambda ((procedure? pred) (ilist? ilist)) ilist?)
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) ilist?)
   (tags pure)
   (desc . "Returns the longest initial prefix of ilist whose elements all satisfy the predicate pred."))
  ((name . "idrop-while")
-  (signature lambda ((procedure? pred) (ilist? ilist)) ilist?)
-  (subsigs (pred (lambda (obj) *)))
+  (signature lambda ((predicate pred) (ilist? ilist)) ilist?)
   (tags pure)
   (desc . "idrops the longest initial prefix of ilist whose elements all satisfy the predicate pred, and returns the rest of the ilist."))
  ((group
     ((name . "ispan")
-     (signature lambda ((procedure? pred) (ilist? ilist)) (values ilist? ilist?))
-     (subsigs (pred (lambda (obj) *)))
+     (signature lambda ((predicate pred) (ilist? ilist)) (values ilist? ilist?))
      (tags pure))
     ((name . "ibreak")
-     (signature lambda ((procedure? pred) (ilist? ilist)) (values ilist? ilist?))
-     (subsigs (pred (lambda (obj) *)))
+     (signature lambda ((predicate pred) (ilist? ilist)) (values ilist? ilist?))
      (tags pure)))
   (desc . "ispan splits the ilist into the longest initial prefix whose elements all satisfy pred, and the remaining tail. ibreak inverts the sense of the predicate: the tail commences with the first element of the input ilist that satisfies the predicate.
 In other words: ispan finds the initial span of elements satisfying pred, and ibreak breaks the ilist at the first element satisfying pred. "))
@@ -583,10 +571,10 @@ Construct a new ialist entry mapping key -> datum onto ialist."))
   (desc . "ialist-delete deletes all associations from ialist with the given key, using key-comparison procedure =, which defaults to equal?. The dynamic order in which the various applications of = are made is not specified.
 Return values may share common tails with the ialist argument. The ialist is not disordered — elements that appear in the result ialist occur in the same order as they occur in the argument ialist.
 The comparison procedure is used to compare the element keys ki of ialist's entries to the key parameter in this way: (= key ki)"))
- ((name . "replace-icar") 
+ ((name . "replace-icar")
   (signature lambda ((ipair? ipair) object) ipair?)
   (desc . "This procedure returns an ipair with object in the icar field and the icdr of ipair in the icdr field."))
- ((name . "replace-icdr") 
+ ((name . "replace-icdr")
   (signature lambda ((ipair? ipair) object) ipair?)
   (desc . "This procedure returns an ipair with object in the icdr field and the icar of ipair in the icar field."))
  ((group
@@ -629,10 +617,10 @@ These procedures are not inverses in the general case. For example, a pair of ip
   (signature lambda ((procedure? proc) arg1 ... (ilist? args)) *)
   (tags pure)
   (desc . "The iapply procedure is an analogue of apply whose last argument is an ilist rather than a list. It is equivalent to (apply procedure object ... (ilist->list ilist)), but may be implemented more efficiently."))
- ((name . "ipair-comparator") 
+ ((name . "ipair-comparator")
   (signature value comparator?)
   (desc . "The ipair-comparator object is a SRFI-114 comparator suitable for comparing ipairs. Note that it is not a procedure. It compares pairs using default-comparator on their cars. If the cars are not equal, that value is returned. If they are equal, default-comparator is used on their cdrs and that value is returned."))
- ((name . "ilist-comparator") 
+ ((name . "ilist-comparator")
   (signature value comparator?)
   (desc . "The ilist-comparator object is a SRFI-114 comparator suitable for comparing ilists. Note that it is not a procedure. It compares ilists lexicographically, as follows:
 * The empty ilist compares equal to itself.
