@@ -1,5 +1,5 @@
 FROM schemers/chicken:5 as chicken
-RUN chicken-install json matchable srfi-1
+RUN chicken-install matchable srfi-1
 COPY ./scheme-index-util /scheme-index-util
 WORKDIR /scheme-index-util
 RUN csc validatedata.scm

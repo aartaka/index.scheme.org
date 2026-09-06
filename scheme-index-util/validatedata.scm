@@ -27,13 +27,11 @@ SOFTWARE.
            (scheme file)
            (scheme process-context)
            (chicken process-context)
-           json
            matchable
            srfi-1))
   (chicken-5
    (import (chicken file)
            (chicken process-context)
-           json
            matchable
            srfi-1)))
 
