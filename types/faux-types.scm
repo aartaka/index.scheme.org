@@ -2,6 +2,9 @@
  ;; Standard predicate-less types
  (environment . "Environment (set of libraries and their identifiers,) as per R7RS section 6.12")
  (predicate . "A procedure that returns a (usually) boolean value for whether its argument has some property")
+ (equality . "A procedure that returns a (usually) boolean value for whether its arguments are equal")
+ (comparator . "A procedure that returns a (usually) boolean value for whether its arguments should be sorted in a certain order")
+ (icomparator . "A procedure that returns an integer specifying a sorting order for its two arguments")
  (file-options . "Object representing special flags for file handling and I/O (R6RS)")
  (codec . "An immutable Scheme object that represents a Unicode or similar encoding scheme (R6RS)")
  (transcoder . "A transcoder is an immutable Scheme object that combines a codec with an end-of-line style and a method for handling decoding errors (R6RS)")
