@@ -354,6 +354,10 @@
  ((srfi 239) . "types/srfi.239.scm")
  ((srfi 253) . "types/srfi.253.scm")
  ((srfi 273) . "types/srfi.273.scm")
+ ;; ((srfi 274) . "types/srfi.274.scm") TODO
+ ;; ((srfi 275) . "types/srfi.275.scm") TODO
+ ;; ((srfi 276) . "types/srfi.276.scm") TODO
+ ((srfi 277) . "types/srfi.277.scm")
 
  ;; specific implementation handling
  ;(bigloo . "types/r5rs.scm")
