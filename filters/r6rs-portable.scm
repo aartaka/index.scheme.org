@@ -146,6 +146,7 @@
  ((srfi 180) . #t)
  ((srfi 185) . #t)
  ((srfi 190) . #t)
+ ((srfi 191) . #t)
  ((srfi 193) . #t)
  ((srfi 196) . #t)
  ((srfi 197) . #t)
