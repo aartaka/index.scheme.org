@@ -5,14 +5,13 @@
  ((name . "mapping-unfold")
   (signature
    lambda
-   ((procedure? stop?)
+   ((predicate stop?)
     (procedure? mapper)
     (procedure? successor)
     seed
     (comparator? comparator))
    mapping?)
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (values * *)))
    (successor (lambda (seed) *)))
   (tags pure)
@@ -380,14 +379,13 @@ Furthermore, it is explicitly not an error if mapping=? is invoked on mappings t
     ((name . "mapping-unfold/ordered")
      (signature
        lambda
-       ((procedure? stop?)
+       ((predicate stop?)
         (procedure? mapper)
         (procedure? successor)
         seed
         (comparator? comparator))
        mapping?)
      (subsigs
-       (stop? (lambda (seed) boolean?))
        (mapper (lambda (seed) (values * *)))
        (successor (lambda (seed) *)))
      (tags pure)))

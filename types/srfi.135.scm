@@ -11,18 +11,16 @@
     ((name . "textual-every")
      (signature
        case-lambda
-       (((procedure? pred) (textual? textual)) *)
-       (((procedure? pred) (textual? textual) (integer? start)) *)
-       (((procedure? pred) (textual? textual) (integer? start) (integer? end)) *))
-     (subsigs (pred (lambda ((char? char)) *)))
+       (((predicate pred) (textual? textual)) *)
+       (((predicate pred) (textual? textual) (integer? start)) *)
+       (((predicate pred) (textual? textual) (integer? start) (integer? end)) *))
      (tags pure))
     ((name . "textual-any")
      (signature
        case-lambda
-       (((procedure? pred) (textual? textual)) *)
-       (((procedure? pred) (textual? textual) (integer? start)) *)
-       (((procedure? pred) (textual? textual) (integer? start) (integer? end)) *))
-     (subsigs (pred (lambda ((char? char)) *)))
+       (((predicate pred) (textual? textual)) *)
+       (((predicate pred) (textual? textual) (integer? start)) *)
+       (((predicate pred) (textual? textual) (integer? start) (integer? end)) *))
      (tags pure)))
   (desc . "Checks to see if every/any character in textual satisfies pred, proceeding from left (index start) to right (index end). textual-every These procedures are short-circuiting: if pred returns false, textual-every does not call pred on subsequent characters; if pred returns true, textual-any does not call pred on subsequent characters; Both procedures are \"witness-generating\":
 * If textual-every is given an empty interval (with start = end), it returns #t.
@@ -43,14 +41,14 @@ Note: The names of these procedures do not end with a question mark. This indica
  ((name . "text-unfold")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) text?)
-   (((procedure? stop?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) text?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (textual? base))
     text?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -58,7 +56,6 @@ Note: The names of these procedures do not end with a question mark. This indica
      (procedure? make-final))
     text?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (or char? string? text?)))
    (success (lambda (seed) *))
    (make-final (lambda (seed) (or char? string? text?))))
@@ -74,14 +71,14 @@ text-unfold is a fairly powerful text constructor. You can use it to convert a l
  ((name . "text-unfold-right")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) text?)
-   (((procedure? stop?)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed) text?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (textual? base))
     text?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -89,7 +86,6 @@ text-unfold is a fairly powerful text constructor. You can use it to convert a l
      (procedure? make-final))
     text?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (or char? string? text?)))
    (success (lambda (seed) *))
    (make-final (lambda (seed) (or char? string? text?))))
@@ -311,31 +307,28 @@ If textual is a string, then that string does not share any storage with the res
      (signature
        case-lambda
        (((textual? textual)) text?)
-       (((textual? textual) (procedure? pred)) text?)
-       (((textual? textual) (procedure? pred) (integer? start)) text?)
+       (((textual? textual) (predicate pred)) text?)
+       (((textual? textual) (predicate pred) (integer? start)) text?)
        (((textual? textual) (procedure? pred) (integer? start) (integer? end))
         text?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-trim-right")
      (signature
        case-lambda
        (((textual? textual)) text?)
-       (((textual? textual) (procedure? pred)) text?)
-       (((textual? textual) (procedure? pred) (integer? start)) text?)
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) text?)
+       (((textual? textual) (predicate pred) (integer? start)) text?)
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         text?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-trim-both")
      (signature
        case-lambda
        (((textual? textual)) text?)
-       (((textual? textual) (procedure? pred)) text?)
-       (((textual? textual) (procedure? pred) (integer? start)) text?)
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) text?)
+       (((textual? textual) (predicate pred) (integer? start)) text?)
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         text?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "Returns a text obtained from the given subrange of textual by skipping over all characters on the left / on the right / on both sides that satisfy the second argument pred: pred defaults to char-whitespace?.
 If textual is a string, then that string does not share any storage with the result, so subsequent mutation of that string will not affect the text returned by these procedures. If textual is a text, implementations are encouraged to return a result that shares storage with that text whenever sharing would be space-efficient."))
@@ -527,38 +520,34 @@ The optional start/end indexes restrict the comparison to the indicated subtexts
     ((name . "textual-index")
      (signature
        case-lambda
-       (((textual? textual) (procedure? pred)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-index-right")
      (signature
        case-lambda
-       (((textual? textual) (procedure? pred)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-skip")
      (signature
        case-lambda
-       (((textual? textual) (procedure? pred)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-skip-right")
      (signature
        case-lambda
-       (((textual? textual) (procedure? pred)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start)) (or #f integer?))
-       (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+       (((textual? textual) (predicate pred)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start)) (or #f integer?))
+       (((textual? textual) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "textual-index searches through the given subtext or substring from the left, returning the index of the leftmost character satisfying the predicate pred. textual-index-right searches from the right, returning the index of the rightmost character satisfying the predicate pred. If no match is found, these procedures return #f.
 Rationale: The SRFI 130 analogues of these procedures return cursors, even when no match is found, and SRFI 130's string-index-right returns the successor of the cursor for the first character that satisfies the predicate. As there are no cursors in this SRFI, it seems best to follow the more intuitive and long-standing precedent set by SRFI 13.
@@ -734,31 +723,28 @@ The textual-for-each procedure applies proc element-wise to the characters of th
  ((name . "textual-count")
   (signature
    case-lambda
-   (((textual? textual) (procedure? pred)) integer?)
-   (((textual? textual) (procedure? pred) (integer? start)) integer?)
-   (((textual? textual) (procedure? pred) (integer? start) (integer? end))
+   (((textual? textual) (predicate pred)) integer?)
+   (((textual? textual) (predicate pred) (integer? start)) integer?)
+   (((textual? textual) (predicate pred) (integer? start) (integer? end))
     integer?))
-  (subsigs (pred (lambda ((char? char)) boolean?)))
   (tags pure)
   (desc . "Returns a count of the number of characters in the specified subtext of textual that satisfy the given predicate."))
  ((group
     ((name . "textual-filter")
      (signature
        case-lambda
-       (((procedure? pred) (textual? textual)) text?)
-       (((procedure? pred) (textual? textual) (integer? start)) text?)
-       (((procedure? pred) (textual? textual) (integer? start) (integer? end))
+       (((predicate pred) (textual? textual)) text?)
+       (((predicate pred) (textual? textual) (integer? start)) text?)
+       (((predicate pred) (textual? textual) (integer? start) (integer? end))
         text?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "textual-remove")
      (signature
        case-lambda
-       (((procedure? pred) (textual? textual)) text?)
-       (((procedure? pred) (textual? textual) (integer? start)) text?)
-       (((procedure? pred) (textual? textual) (integer? start) (integer? end))
+       (((predicate pred) (textual? textual)) text?)
+       (((predicate pred) (textual? textual) (integer? start)) text?)
+       (((predicate pred) (textual? textual) (integer? start) (integer? end))
         text?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "Filter the given subtext of textual, retaining only those characters that satisfy / do not satisfy pred.
 If textual is a string, then that string does not share any storage with the result, so subsequent mutation of that string will not affect the text returned by these procedures. If textual is a text, implementations are encouraged to return a result that shares storage with that text whenever sharing would be space-efficient."))

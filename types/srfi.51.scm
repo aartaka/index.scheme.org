@@ -1,5 +1,5 @@
 (((name . "rest-values")
-  (signature 
+  (signature
     case-lambda
     (((list? rest-list)) list?)
     ((caller (list? rest-list)) list?)

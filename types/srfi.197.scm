@@ -1,5 +1,5 @@
 (((name . "chain")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ initial-value step ...))
              ((_ initial-value placeholder step ...))
              ((_ initial-value placeholder ellipsis step ...)))
@@ -12,7 +12,7 @@ Semantics: chain evaluates each <step> in order from left to right, passing the 
 Each <step> is evaluated as an application, and the return value(s) of that application are passed to the next step as its pipeline values. <initial-value> is the pipeline value of the first step. The return value(s) of chain are the return value(s) of the last step.
 The placeholder symbols in each <step> are replaced with that step's pipeline values, in the order they appear. It is an error if the number of placeholders for a step does not equal the number of pipeline values for that step, unless the step contains no placeholders, in which case it will ignore its pipeline values."))
  ((name . "chain-and")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ initial-value step ...))
              ((_ initial-value placeholder step ...)))
   (subsigs
@@ -23,7 +23,7 @@ Each <step> is evaluated as an application. If the step evaluates to #f, the rem
 The <_> placeholder in each <step> is replaced with that step's pipeline value. If a <step> does not contain <_>, it will ignore its pipeline value, but chain-and will still check whether that pipeline value is #f.
 Because chain-and checks the return value of each step, it does not support steps with multiple return values. It is an error if a step returns more than one value."))
  ((name . "chain-when")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ initial-value (guard step) ...))
              ((_ initial-value placeholder (guard step) ...))
              ((_ initial-value (step) ...))
@@ -37,7 +37,7 @@ The <_> placeholder in each <step> is replaced with that step's pipeline value. 
 If a step's <guard> is present and evaluates to #f, that step will be skipped, and its pipeline value will be reused as the pipeline value of the next step. The return value of chain-when is the return value of the last non-skipped step, or <initial-value> if all steps are skipped.
 Because chain-when may skip steps, it does not support steps with multiple return values. It is an error if a step returns more than one value."))
  ((name . "chain-lambda")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ initial-value step ...) procedure?)
              ((_ initial-value placeholder step ...) procedure?)
              ((_ initial-value placeholder ellipsis step ...) procedure?))
@@ -51,7 +51,7 @@ The placeholder symbols in each <step> are replaced with that step's pipeline va
 If a <step> ends with a placeholder symbol followed by an ellipsis symbol, that placeholder sequence is replaced with all remaining pipeline values that do not have a matching placeholder.
 The number of placeholders in the first <step> determines the arity of the procedure. If the first step ends with an ellipsis symbol, the procedure is variadic."))
  ((name . "nest")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ step ... initial-value))
              ((_ placeholder step ... initial-value)))
   (subsigs
@@ -62,7 +62,7 @@ A nest expression is evaluated by lexically replacing the <_> in the last <step>
 Because it produces an actual nested form, nest can build expressions that chain cannot. For example, nest can build a quoted data structure:
 nest can also safely include special forms like if, let, lambda, or parameterize in a pipeline."))
  ((name . "nest-reverse")
-  (signature syntax-rules () 
+  (signature syntax-rules ()
              ((_ initial-value step ...))
              ((_ initial-value placeholder step ...)))
   (subsigs

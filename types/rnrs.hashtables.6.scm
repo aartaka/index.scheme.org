@@ -84,7 +84,7 @@ Note: Hashtables are allowed to cache the results of calling the hash function a
   (signature lambda ((hashtable? hashtable)) boolean?)
   (tags pure)
   (desc . "Returns #t if hashtable is mutable, otherwise #f."))
- ((name . "equal-hash") 
+ ((name . "equal-hash")
   (signature lambda (obj) integer?)
   (tags pure)
   (desc . "Returns an integer hash value for obj, based on its structure and current contents. This hash function is suitable for use with equal? as an equivalence function.

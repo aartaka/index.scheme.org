@@ -63,21 +63,19 @@
  ((group ((name . "char-set-unfold")
           (signature
            case-lambda
-           (((procedure? stop?) (procedure? mapper) (procedure? successor) seed) char-set?)
-           (((procedure? stop?) (procedure? mapper) (procedure? successor) seed (char-set? base-cs))
+           (((predicate stop?) (procedure? mapper) (procedure? successor) seed) char-set?)
+           (((predicate stop?) (procedure? mapper) (procedure? successor) seed (char-set? base-cs))
             char-set?))
           (subsigs
-           (stop? (lambda (seed) boolean?))
            (mapper (lambda (seed) char?))
            (successor (lambda (seed) *)))
           (tags pure))
          ((name . "char-set-unfold!")
           (signature
            lambda
-           ((procedure? stop?) (procedure? mapper) (procedure? successor) seed (char-set? base-cs))
+           ((predicate stop?) (procedure? mapper) (procedure? successor) seed (char-set? base-cs))
            char-set?)
           (subsigs
-           (stop? (lambda (seed) boolean?))
            (mapper (lambda (seed) char?))
            (successor (lambda (seed) *)))
           (tags pure)))
@@ -128,16 +126,14 @@ Essentially lifts proc from a char->char procedure to a char-set -> char-set pro
  ((group ((name . "char-set-filter")
           (signature
            case-lambda
-           (((procedure? pred) (char-set? cs)) char-set?)
-           (((procedure? pred) (char-set? cs) (char-set? base-cs)) char-set?))
-          (subsigs (pred (lambda ((char? c)) boolean?)))
+           (((predicate pred) (char-set? cs)) char-set?)
+           (((predicate pred) (char-set? cs) (char-set? base-cs)) char-set?))
           (tags pure))
          ((name . "char-set-filter!")
           (signature
            lambda
-           ((procedure? pred) (char-set? cs) (char-set? base-cs))
-           char-set?)
-          (subsigs (pred (lambda ((char? c)) boolean?)))))
+           ((predicate pred) (char-set? cs) (char-set? base-cs))
+           char-set?)))
   (desc . "Returns a character set containing every character c in cs such that (pred c) returns true.
     If character set base-cs is provided, the characters specified by pred are added to it. char-set-filter! is allowed, but not required, to side-effect and reuse the storage in base-cs; char-set-filter produces a fresh character set.
     An implementation may not save away a reference to pred and invoke it after char-set-filter or char-set-filter! returns -- that is, \"lazy\", on-demand implementations are not allowed, as pred may have external dependencies on mutable data or have other side-effects.
@@ -176,8 +172,7 @@ Essentially lifts proc from a char->char procedure to a char-set -> char-set pro
   (tags pure)
   (desc . "Returns the number of elements in character set cs."))
  ((name . "char-set-count")
-  (signature lambda ((procedure? pred) (char-set? cs)) integer?)
-  (subsigs (pred (lambda ((char? c)) boolean?)))
+  (signature lambda ((predicate pred) (char-set? cs)) integer?)
   (tags pure)
   (desc . "Apply pred to the chars of character set cs, and return the number of chars that caused the predicate to return true."))
  ((name . "char-set->list")
@@ -191,12 +186,10 @@ Essentially lifts proc from a char->char procedure to a char-set -> char-set pro
   (desc . "This procedure tests char for membership in character set cs.
     The MIT Scheme character-set package called this procedure char-set-member?, but the argument order isn't consistent with the name."))
  ((group ((name . "char-set-every")
-          (signature lambda ((procedure? pred) (char-set? cs)) boolean?)
-          (subsigs (pred (lambda ((char? c)) boolean?)))
+          (signature lambda ((predicate pred) (char-set? cs)) boolean?)
           (tags pure))
          ((name . "char-set-any")
-          (signature lambda ((procedure? pred) (char-set? cs)) boolean?)
-          (subsigs (pred (lambda ((char? c)) boolean?)))
+          (signature lambda ((predicate pred) (char-set? cs)) boolean?)
           (tags pure)))
   (desc . "(shared description for char-set-every, char-set-any)  The char-set-every procedure returns true if predicate pred returns true of every character in the character set cs. Likewise, char-set-any applies pred to every character in character set cs, and returns the first true value it finds. If no character produces a true value, it returns false. The order in which these procedures sequence through the elements of cs is not specified.
 Note that if you need to determine the actual character on which a predicate returns true, use char-set-any and arrange for the predicate to return the character parameter as its true value"))

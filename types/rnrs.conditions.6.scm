@@ -104,7 +104,7 @@ This type describes errors, typically caused by something that has gone wrong in
 
 This type describes violations of the language standard or a library standard, typically caused by a programming error."))
  ((group
-    ((name . "&assertion") 
+    ((name . "&assertion")
      (signature value record-type-descriptor?))
     ((name . "make-assertion-violation")
      (signature lambda () assertion-violation?)
@@ -118,7 +118,7 @@ This type describes violations of the language standard or a library standard, t
 
 This type describes an invalid call to a procedure, either passing an invalid number of arguments, or passing an argument of the wrong type."))
  ((group
-    ((name . "&irritants") 
+    ((name . "&irritants")
      (signature value record-type-descriptor?))
     ((name . "make-irritants-condition")
      (signature lambda ((list? irritants)) irritants-condition?)
@@ -136,7 +136,7 @@ This type describes an invalid call to a procedure, either passing an invalid nu
 
 Irritants should be a list of objects. This condition provides additional information about a condition, typically the argument list of a procedure that detected an exception. Conditions of this type are created by the error and assertion-violation procedures of report section on \"Errors and violations\"."))
  ((group
-    ((name . "&who") 
+    ((name . "&who")
      (signature value record-type-descriptor?))
     ((name . "make-who-condition")
      (signature lambda (((or string? symbol?) who)) who-condition?)
@@ -154,7 +154,7 @@ Irritants should be a list of objects. This condition provides additional inform
 
 Who should be a symbol or string identifying the entity reporting the exception. Conditions of this type are created by the error and assertion-violation procedures (report section on \"Errors and violations\"), and the syntax-violation procedure (section on \"Syntax violations\")."))
  ((group
-    ((name . "&non-continuable") 
+    ((name . "&non-continuable")
      (signature value record-type-descriptor?))
     ((name . "make-non-continuable-violation")
      (signature lambda () non-continuable-violation?)

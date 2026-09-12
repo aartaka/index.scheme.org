@@ -139,7 +139,7 @@ If the port does not support the operation, port-position raises an exception wi
 The port-has-set-port-position!? procedure returns #t if the port supports the set-port-position! operation, and #f otherwise.
 The set-port-position! procedure raises an exception with condition type &assertion if the port does not support the operation, and an exception with condition type &i/o-invalid-position if pos is not in the range of valid positions of port. Otherwise, it sets the current position of the port to pos. If port is an output port, set-port-position! first flushes port. (See flush-output-port, section 8.2.10.)
 If port is a binary output port and the current position is set beyond the current end of the data in the underlying data sink, the object is not extended until new data is written at that position. The contents of any intervening positions are unspecified. Binary ports created by open-file-output-port and open-file-input/output-port can always be extended in this manner within the limits of the underlying operating system. In other cases, attempts to set the port beyond the current end of data in the underlying object may result in an exception with condition type &i/o-invalid-position."))
- ((name . "close-port") 
+ ((name . "close-port")
   (signature lambda ((port? port)) undefined)
   (desc . "Closes the port, rendering the port incapable of delivering or accepting data. If port is an output port, it is flushed before being closed. This has no effect if the port has already been closed. A closed port is still a port. The close-port procedure returns unspecified values."))
  ((name . "call-with-port")
@@ -183,10 +183,10 @@ If bytevector is modified after open-bytevector-input-port has been called, the 
  ((name . "open-string-input-port")
   (signature lambda ((string? string)) input-port?)
   (desc . "Returns a textual input port whose characters are drawn from string. The port may or may not have an associated transcoder; if it does, the transcoder is implementation-dependent. The port should support the port-position and set-port-position! operations. If string is modified after open-string-input-port has been called, the effect on the returned port is unspecified."))
- ((name . "standard-input-port") 
+ ((name . "standard-input-port")
   (signature lambda () binary-port?)
   (desc . "Returns a fresh binary input port connected to standard input. Whether the port supports the port-position and set-port-position! operations is implementation-dependent."))
- ((name . "current-input-port") 
+ ((name . "current-input-port")
   (signature lambda () textual-port?)
   (desc . "This returns a default textual port for input. Normally, this default port is associated with standard input, but can be dynamically re-assigned using the with-input-from-file procedure from the (rnrs io simple (6)) library (see section 8.3). The port may or may not have an associated transcoder; if it does, the transcoder is implementation-dependent."))
  ((name . "make-custom-binary-input-port")
@@ -293,7 +293,7 @@ The get-string-n! procedure reads from textual-input-port in the same manner as 
   (signature lambda ((input-port? input-port)) (or eof-object? string?))
   (desc . "Reads from textual-input-port up to and including the linefeed character or end of file, decoding characters in the same manner as get-string-n and get-string-n!.
 If a linefeed character is read, a string containing all of the text up to (but not including) the linefeed character is returned, and the port is updated to point just past the linefeed character. If an end of file is encountered before any linefeed character is read, but some characters have been read and decoded as characters, a string containing those characters is returned. If an end of file is encountered before any characters are read, the end-of-file object is returned."))
- ((name . "get-datum") 
+ ((name . "get-datum")
   (signature lambda ((input-port? input-port)) *)
   (desc . "Reads an external representation from textual-input-port and returns the datum it represents. The get-datum procedure returns the next datum that can be parsed from the given textual-input-port, updating textual-input-port to point exactly past the end of the external representation of the object.
 Any <interlexeme space> (see report section on “Lexical syntax”) in the input is first skipped. If an end of file occurs after the <interlexeme space>, the end-of-file object (see section 8.2.5) is returned.

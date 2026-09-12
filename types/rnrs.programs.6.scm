@@ -1,4 +1,4 @@
-(((name . "command-line") 
+(((name . "command-line")
   (signature lambda () list?)
   (desc . "Returns a nonempty list of strings. The first element is an implementation-specific name for the running top-level program. The remaining elements are command-line arguments according to the operating system's conventions."))
  ((name . "exit")

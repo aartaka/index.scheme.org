@@ -70,7 +70,7 @@ If the flags is omitted, the default value must be the result of following form;
  ((name . "call-with-socket")
   (signature lambda ((socket? socket) (procedure? proc)) *)
   (subsigs
-    (proc (lambda () *)))
+    (proc (lambda ((socket? socket)) *)))
   (desc . "Calls a given procedure with a given socket as an argument. If given proc returns then it returns the result of proc and socket will be automatically closed. If proc doesn't return then given socket won't be closed automatically. It's analogy of call-with-port."))
  ((name . "address-family")
   (signature syntax-rules ()

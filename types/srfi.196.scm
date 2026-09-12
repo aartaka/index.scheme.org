@@ -5,23 +5,23 @@
   (tags pure)
   (desc . "Returns a range whose length (number of elements) is length. The indexer procedure returns the nth element (where 0 ≤ n < length) of the range, given n. This procedure must run in O(1) time. The range returned is compact, although indexer may close over arbitrarily large data structures. The average accessing time of the resulting range is the average time needed to run indexer."))
  ((name . "numeric-range")
-  (signature case-lambda 
+  (signature case-lambda
              (((number? start) (number? end)) range?)
              (((number? start) (number? end) (number? step)) range?))
   (tags pure)
   (desc . "Returns a numeric range, a special case of a range specified by an inclusive lower bound start, an exclusive upper bound end, and a step value (default 1), all of which can be exact or inexact real numbers. This constructor produces the sequence
-    start, (+ start step), (+ start (* 2 step)), …, (+ start (* n step)), 
+    start, (+ start step), (+ start (* 2 step)), …, (+ start (* n step)),
 
 where n is the greatest integer such that (+ start (* n step)) < end if step is positive, or such that (+ start (* n step)) > end if step is negative. It is is an error if an n satisfying this condition cannot be determined, or if step is numerically zero. This procedure must run in O(1) time. The average accessing time of the resulting range must be O(1).
 Note that an effect of this definition is that the elements of a range over inexact numbers are enumerated by multiplying the index by the step value rather than by adding the step value to itself repeatedly. This reduces the likelihood of roundoff errors."))
  ((name . "iota-range")
-  (signature case-lambda 
+  (signature case-lambda
              (((integer? length)) range?)
              (((integer? length) (number? start)) range?)
              (((integer? length) (number? start) (number? step)) range?))
   (tags pure)
   (desc . "Returns an iota-numeric range, a special case of a range specified by a length (a non-negative exact integer) as well as an inclusive lower bound start (default 0) and a step value (default 1), both of which can be exact or inexact real numbers. This constructor produces the sequence
-    start, (+ start step), (+ start (* 2 step)), …, (+ start (* (- length 1) step)), 
+    start, (+ start step), (+ start (* 2 step)), …, (+ start (* (- length 1) step)),
 
 This procedure must run in O(1) time. The average accessing time of the resulting range must be O(1).
 Note that an effect of this definition is that the elements of a range over inexact numbers are enumerated by multiplying the index by the step value rather than by adding the step value to itself repeatedly. This reduces the likelihood of roundoff errors."))
@@ -98,20 +98,14 @@ In a Scheme that guarantees O(1) random access to strings, range-ref on a range 
      (tags pure)))
   (desc . "Returns a range which contains all except the first/last count elements of range. These procedures must run in O(1) time. The average accessing time of the resulting ranges is asymptotically bounded by the average accessing time respectively of range."))
  ((name . "range-count")
-  (signature lambda ((procedure? pred) (range? range1) (range? range2) ...) integer?)
-  (subsigs
-    (pred (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred) (range? range1) (range? range2) ...) integer?)
   (tags pure)
   (desc . "Applies pred element-wise to the elements of ranges and returns the number of applications which returned true values. If more than one range is given and not all ranges have the same length, range-count terminates when the shortest range is exhausted. The runtime of this procedure is O(s) where s is the sum of the total accessing times of the ranges."))
  ((name . "range-any")
-  (signature lambda ((procedure? pred) (range? range1) (range? range2) ...) *)
-  (subsigs
-    (pred (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred) (range? range1) (range? range2) ...) *)
   (desc . "Invokes pred element-wise to the elements of the ranges until one call returns a true value, and then returns that value. Otherwise, #f is returned. If more than one range is given and not all ranges have the same length, range-any terminates when the shortest range is exhausted. The runtime of this procedure is O(s) where s is the sum of the total accessing times of the ranges."))
  ((name . "range-every")
-  (signature lambda ((procedure? pred) (range? range1) (range? range2) ...) *)
-  (subsigs
-    (pred (lambda (obj) boolean?)))
+  (signature lambda ((predicate pred) (range? range1) (range? range2) ...) *)
   (desc . "Applies pred element-wise to the elements of the ranges and returns true if pred returns true on every application. Specifically it returns the last value returned by pred, or #t if pred was never invoked. Otherwise, #f is returned. If more than one range is given and not all ranges have the same length, range-every terminates when the shortest range is exhausted. The runtime of this procedure is O(s) + O(k), where s is the sum of the total accessing times of the ranges and k is the number of ranges."))
  ((group
      ((name . "range-map")
@@ -196,26 +190,18 @@ The range-filter and range-remove procedures eagerly compute their results and r
   (desc . "Applies pred element-wise to the elements of ranges and returns the index of the first/last element at which pred returns true. Otherwise, returns #f. If more than one range is given and not all ranges have the same length, range-index terminates when the shortest range is exhausted. It is an error if the ranges passed to range-index-right do not all have the same lengths. The runtime of these procedures must be O(s) where s is the sum of the total accessing times of the ranges."))
  ((group
     ((name . "range-take-while")
-     (signature lambda ((procedure? pred) (range? range)) range?)
-     (subsigs
-       (pred (lambda (el) boolean?)))
+     (signature lambda ((predicate pred) (range? range)) range?)
      (tags pure))
     ((name . "range-take-while-right")
-     (signature lambda ((procedure? pred) (range? range)) range?)
-     (subsigs
-       (pred (lambda (el) boolean?)))
+     (signature lambda ((predicate pred) (range? range)) range?)
      (tags pure)))
   (desc . "Returns a range containing the leading/trailing elements of range that satisfy pred up to the first/last one that does not. The runtime of these procedures is asymptotically bounded by the total accessing time of the range. The average accessing time of the resulting range is O(1)."))
  ((group
     ((name . "range-drop-while")
-     (signature lambda ((procedure? pred) (range? range)) range?)
-     (subsigs
-       (pred (lambda (el) boolean?)))
+     (signature lambda ((predicate pred) (range? range)) range?)
      (tags pure))
     ((name . "range-drop-while-right")
-     (signature lambda ((procedure? pred) (range? range)) range?)
-     (subsigs
-       (pred (lambda (el) boolean?)))
+     (signature lambda ((predicate pred) (range? range)) range?)
      (tags pure)))
   (desc . "Returns a range that omits leading/trailing elements of range that satisfy pred until the first/last one that does not. The runtime of these procedures is asymptotically bounded by the total accessing time of the range. The average accessing time of the resulting range is O(1)."))
  ((group

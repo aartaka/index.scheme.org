@@ -1,9 +1,9 @@
 (((name . "array?")
   (signature lambda (obj) boolean?)
   (tags pure predicate)
-  (desc . "Returns #t if the obj is an array, and #f if not. 
+  (desc . "Returns #t if the obj is an array, and #f if not.
 Note: Arrays are not disjoint from other Scheme types. Strings and vectors also satisfy array?."))
- ((name . "equal?") 
+ ((name . "equal?")
   (signature lambda (obj1 obj2) boolean?)
   (tags pure)
   (desc . "`Equal?' recursively compares the contents of pairs, vectors, strings, and arrays, applying `eqv?' on other objects such as numbers and symbols. A rule of thumb is that objects are generally `equal?' if they print the same. `Equal?' may fail to terminate if its arguments are circular data structures."))
@@ -72,7 +72,7 @@ If the prototype has no elements, then the initial contents of the returned arra
   (subsigs (mapper (lambda ((integer? i1) ...) list?)))
   (tags pure)
   (desc . "make-shared-array can be used to create shared subarrays of other arrays. The mapper is a function that translates coordinates in the new array into coordinates in the old array. A mapper must be linear, and its range must stay within the bounds of the old array, but it can be otherwise arbitrary."))
- ((name . "array-rank") 
+ ((name . "array-rank")
   (signature lambda (obj) integer?)
   (tags pure)
   (desc . "Returns the number of dimensions of obj. If obj is not an array, 0 is returned."))
