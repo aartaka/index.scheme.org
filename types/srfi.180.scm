@@ -1,4 +1,4 @@
-(((name . "json-write obj")
+(((name . "json-write")
   (signature case-lambda
              ((obj) undefined)
              ((obj ((or port? procedure?) port-or-accumulator)) undefined))
