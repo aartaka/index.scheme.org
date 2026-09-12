@@ -213,7 +213,7 @@
  ((srfi 99 records syntactic) . "types/srfi.99.records.syntactic.scm")
  ((srfi 100) . "types/srfi.100.scm")
  ((srfi 101) . "types/srfi.101.scm")
- ;; srfi 102 -- withdrawn
+ ((srfi 102) . "types/srfi.102.scm")
  ;; srfi 103 -- withdrawn
  ;; srfi 104 -- withdrawn
  ;; srfi 105 -- non-sexpr syntax
