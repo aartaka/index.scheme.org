@@ -94,7 +94,8 @@ Stream-drop-while returns the suffix of the input stream that starts at the firs
   (desc . "(α → boolean) × {α} → {α}
 Stream-filter returns a newly-allocated stream that contains only those elements x of the input stream for which (pred? x) is non-#f."))
  ((name . "stream-fold")
-  (signature lambda ((predicate proc) base (stream? stream)) *)
+  (signature lambda ((procedure? proc) base (stream? stream)) *)
+  (subsigs (proc (lambda (base element) *)))
   (tags pure)
   (desc . "(α × β → α) × α × {β} → α
 Stream-fold applies a binary procedure to base and the first element of stream to compute a new base, then applies the procedure to the new base and the next element of stream to compute a succeeding base, and so on, accumulating a value that is finally returned as the value of stream-fold when the end of the stream is reached. Stream must be finite, or stream-fold will enter an infinite loop. See also stream-scan, which is similar to stream-fold, but useful for infinite streams. For readers familiar with other functional languages, this is a left-fold; there is no corresponding right-fold, since right-fold relies on finite streams that are fully-evaluated, at which time they may as well be converted to a list."))
