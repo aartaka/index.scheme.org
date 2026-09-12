@@ -332,7 +332,6 @@
    (((predicate stop?) (procedure? mapper) (procedure? successor) seed) list?)
    (((predicate stop?) (procedure? mapper) (procedure? successor) seed (list? tail)) list?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) *))
    (successor (lambda (seed) *)))
   (tags pure)
