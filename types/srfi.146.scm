@@ -12,7 +12,6 @@
     (comparator? comparator))
    mapping?)
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (values * *)))
    (successor (lambda (seed) *)))
   (tags pure)
