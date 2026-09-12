@@ -19,7 +19,7 @@
     (return (list vector?)))
   (desc . "Returns a newly allocated list containing vectors of marks in the continuation mark set marks. The length of each vector in the result list is the same as the length of the key list, and a value in a particular vector position is the value for the corresponding key in list. Values for multiple keys appear in a single vector only when the marks are for the same continuation frame in the continuation mark set marks. The object default is used for vector elements to indicate the lack of a value."))
  ((name . "continuation-mark-set-first")
-  (signature case-lambda 
+  (signature case-lambda
              (((continuation-marks? marks) key) *)
              (((continuation-marks? marks) key default) *))
   (desc . "Returns the first element of the list that would be returned by (continuation-mark-set->list marks key), or default if the result would be the empty list.
@@ -29,7 +29,7 @@ Semantically equivalent to, but may be more efficient than:
         (car lst)
         default)))"))
  ((name . "call-with-immediate-continuation-mark")
-  (signature case-lambda 
+  (signature case-lambda
              ((key (procedure? proc)) *)
              ((key (procedure? proc) default) *))
   (subsigs

@@ -78,7 +78,7 @@
   (subsigs (proc (lambda (obj) *)))
   (tags pure)
   (desc . "Returns the same results as:
-(values (list-ref pair k) 
+(values (list-ref pair k)
         (list-set pair k (proc (list-ref pair k))))
 
 but it may be implemented more efficiently."))

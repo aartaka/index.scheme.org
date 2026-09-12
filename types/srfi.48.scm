@@ -10,7 +10,7 @@ It is unspecified which encoding is used (e.g. ASCII, EBCDIC, UNICODE). A given 
 It is an error if an format directive consumes an obj argument and that argument does not confirm to a required type as noted in the table below.
 It is permissible, but highly discouraged, to implement pretty-print as (define pretty-print write).
 An format directive is a two character sequence in the string where the first character is a tilde '~'. Directive characters are case-independent, i.e. upper and lower case characters are interpreted the same. Each directive code's meaning is described in the following table:
-    DIRECTIVE 	MNEMONIC 	ACTION 	CONSUMES?	
+    DIRECTIVE 	MNEMONIC 	ACTION 	CONSUMES?
     ~a 	Any 	(display obj) for humans 	yes
     ~s 	Slashified 	(write obj) for parsers 	yes
     ~w 	WriteCircular 	(write-with-shared-structure obj) like ~s, but handles recursive structures 	yes

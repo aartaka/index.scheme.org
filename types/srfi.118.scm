@@ -4,7 +4,7 @@
 The string must be a variable-size mutable string. The string-append! procedure extends string by appending each value (in order) to the end of string. A value can be a character or a string.
 Using a string port in this situation is probably preferable: It is more portable, and you can expect decent performance in most implementations. Using string-append! may be slighly more efficient on some implementations, due to lower overhead, but that depends on the strategy used by string-append! when the allocated buffer is too small. The string-append! function is most useful when using (reading) a string is interleaved with growing it, or when also using string-replace!."))
  ((name . "string-replace!")
-  (signature case-lambda 
+  (signature case-lambda
              (((string? dst) (integer? dst-start) (integer? dst-end) (string? src)) undefined)
              (((string? dst) (integer? dst-start) (integer? dst-end) (string? src) (integer? src-start)) undefined)
              (((string? dst) (integer? dst-start) (integer? dst-end) (string? src) (integer? src-start) (integer? src-end)) undefined))

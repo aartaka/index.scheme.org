@@ -4,10 +4,7 @@
       (return (lambda (arg ...) (values * ...))))
   (desc . "Returns the objs as its values, ignoring args."))
  ((name . "complement")
-  (signature lambda ((procedure? proc)) procedure?)
-  (subsigs 
-      (proc (lambda (x) boolean?))
-      (return (lambda (x) boolean?)))
+  (signature lambda ((predicate proc)) predicate)
   (desc . "Returns #t when (proc obj) returns #f, and #f otherwise."))
  ((name . "flip")
   (signature lambda ((procedure? proc)) procedure?)
@@ -29,21 +26,15 @@
   (desc . "Returns (proc obj₁)."))
  ((name . "on-right")
   (signature lambda ((procedure? proc)) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (x) *))
       (return (lambda (obj1 obj2) *)))
   (desc . "Returns (proc obj₂)."))
  ((name . "conjoin")
-  (signature lambda ((procedure? proc) ...) procedure?)
-  (subsigs 
-      (proc (lambda (arg ...) boolean?))
-      (return (lambda (arg ...) *)))
+  (signature lambda ((predicate proc) ...) predicate)
   (desc . "The predicates are applied in turn to the args as follows: If a call to a predicate returns false, no more predicates are applied and #f is returned. If all predicates return true, then the last value is returned. If there are no predicates, #t is returned."))
  ((name . "disjoin")
-  (signature lambda ((procedure? proc) ...) procedure?)
-  (subsigs
-      (proc (lambda (arg ...) boolean?))
-      (return (lambda (arg ...) *)))
+  (signature lambda ((predicate proc) ...) predicate)
   (desc . "The predicates are applied in turn to the args as follows: If a call to a predicate returns true, no more predicates are applied and its value is returned. If all predicates return false, then the last value is returned. If there are no predicates, #f is returned."))
  ((name . "each-of")
   (signature lambda ((procedure? proc) ...) procedure?)
@@ -53,59 +44,59 @@
   (desc . "Applies each of the procs in turn to args, discarding the results and returning an unspecified value."))
  ((name . "all-of")
   (signature lambda ((procedure? proc)) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (arg) *))
       (return (lambda ((list? lst)) boolean?)))
   (desc . "Applies predicate to each element of list in turn, and immediately returns #f if predicate is not satisfied by that element. If every element satisfies predicate, returns the result of the last call to predicate. If list is empty, returns #t."))
  ((name . "any-of")
   (signature lambda ((procedure? proc)) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (arg) *))
       (return (lambda ((list? lst)) boolean?)))
   (desc . "Applies predicate to each element of list in turn, and if predicate is satisfied by that element, immediately returns the result of calling predicate. If no element satisfies predicate returns #f. If list is empty, returns #f."))
  ((name . "on")
   (signature lambda ((procedure? reducer) (procedure? mapper)) procedure?)
-  (subsigs 
+  (subsigs
       (reducer (lambda (a b) *))
       (mapper (lambda (x) *))
       (return (lambda (arg ...) *)))
   (desc . "Applies mapper to each obj in any order and then applies reducer to all of the results in left to right order."))
  ((name . "left-section")
   (signature lambda ((procedure? proc) arg ...) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (obj ...) *))
       (return (lambda (obj ...) *)))
   (desc . "Applies proc to args concatenated with objs."))
  ((name . "right-section")
   (signature lambda ((procedure? proc) arg ...) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (obj ...) *))
       (return (lambda (obj ...) *)))
   (desc . "Applies proc to objs concatenated with the value of (reverse args)."))
  ((name . "apply-chain")
   (signature lambda ((procedure? proc) ...) procedure?)
-  (subsigs 
+  (subsigs
       (proc (lambda (obj ...) *))
       (return (lambda (obj ...) *)))
   (desc . "Applies the last proc to args returning zero or more values, then applies the previous proc to the values, returning more values, until the first proc has been invoked; its values are returned. For example, (apply-chain car cdr) returns a procedure that behaves like cadr:"))
  ((group ((name . "arguments-drop")
           (signature lambda ((procedure? proc) (integer? n)) procedure?)
-          (subsigs 
+          (subsigs
               (proc (lambda (obj ...) *))
               (return (lambda (obj ...) *))))
          ((name . "arguments-drop-right")
           (signature lambda ((procedure? proc) (integer? n)) procedure?)
-          (subsigs 
+          (subsigs
               (proc (lambda (obj ...) *))
               (return (lambda (obj ...) *))))
          ((name . "arguments-take")
           (signature lambda ((procedure? proc) (integer? n)) procedure?)
-          (subsigs 
+          (subsigs
               (proc (lambda (obj ...) *))
               (return (lambda (obj ...) *))))
          ((name . "arguments-take-right")
           (signature lambda ((procedure? proc) (integer? n)) procedure?)
-          (subsigs 
+          (subsigs
               (proc (lambda (obj ...) *))
               (return (lambda (obj ...) *)))))
   (desc . "Apply proc to the args after taking/dropping n arguments from args."))

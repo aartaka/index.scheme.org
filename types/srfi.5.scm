@@ -9,7 +9,7 @@
    ((_ (name (var1 init1) ... var-rest rest-init ...) body)))
   (desc . "An informal specification follows.
 Unnamed
-(let ((<parameter> <argument>)...) 
+(let ((<parameter> <argument>)...)
   <body>...)
 
 Named, non-signature-style, no rest argument
@@ -40,5 +40,5 @@ For informal syntaxes 2 and 3:
 
 For informal syntaxes 4 and 5:
 ($letrec ((<name> ($lambda (<parameter>...
-. <rest-parameter>) <body>...))) 
+. <rest-parameter>) <body>...)))
   (<name> <argument>... <rest-argument>...))")))

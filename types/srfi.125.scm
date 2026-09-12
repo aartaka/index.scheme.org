@@ -21,7 +21,7 @@ The meaning of any further arguments is implementation-dependent. However, imple
  ((name . "hash-table-unfold")
   (signature
    lambda
-   ((procedure? stop?)
+   ((predicate stop?)
     (procedure? mapper)
     (procedure? successor)
     seed
@@ -30,7 +30,6 @@ The meaning of any further arguments is implementation-dependent. However, imple
     ...)
    hash-table?)
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (values * *)))
    (successor (lambda (seed) *)))
   (tags pure)

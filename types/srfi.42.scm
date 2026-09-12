@@ -321,10 +321,10 @@ Initially (after loading the SRFI), the following cases are recognized:
  ((name . ":-dispatch-ref")
   (signature lambda () procedure?)
   (desc . "The current dispatcher used by `:`."))
- ((name . ":-dispatch-set!") 
+ ((name . ":-dispatch-set!")
   (signature lambda ((procedure? d)) undefined)
   (desc . "Install dispatched to be used with `:`."))
- ((name . "make-initial-:-dispatch") 
+ ((name . "make-initial-:-dispatch")
   (signature lambda () procedure?)
   (desc . "Get a copy of initial dispatcher for `:`."))
  ((name . ":list")
@@ -387,7 +387,7 @@ The form (:range <vars> <start> <stop> <step>) first evaluates the expressions <
    ((_ var start stop step) generator-macro)
    ((_ var1 (index var2) start stop step) generator-macro))
   (subsigs (start (value real?)) (stop (value real?)) (step (value real?)))
-  (desc . "Runs through a range of real numbers using an explicit index variable. This form of range enumeration avoids accumulation of rounding errors and is the one to use if any of the numbers defining the range is inexact, not an integer, or a bignum of large magnitude. 
+  (desc . "Runs through a range of real numbers using an explicit index variable. This form of range enumeration avoids accumulation of rounding errors and is the one to use if any of the numbers defining the range is inexact, not an integer, or a bignum of large magnitude.
 Providing default value 0 for <start> and 1 for <step>, the generator first evaluates <start>, <stop>, and <step>, which must result in reals a, b, and s such that n = (b-a)/s is also representable as a real. Then the sequence 0, 1, 2, ... is enumerated while the current value i is less than n, and the variable in <vars> is bound to the value a + i s. If any of the values a, b, or s is non-exact then all values in the sequence are non-exact."))
  ((name . ":char-range")
   (signature
@@ -418,7 +418,7 @@ Providing default value 0 for <start> and 1 for <step>, the generator first eval
 The working of :dispatched is as follows. First <dispatch> and <arg1> <arg>* are evaluated, resulting in a procedure d (the 'dispatcher') and the values a[1] a[2] ... a[n]. Then (d (list a[1] a[2] ... a[n] )) is evaluated, resulting in a value g. If g is not a procedure then the dispatcher did not recognize the argument list and an error is raised. Otherwise the 'generator procedure' g is used to run <vars> through a sequence of values. The sequence defined by g is obtained by repeated evaluation of (g empty) until the result is empty. In other words, g indicates the end of the sequence by returning its only argument, for which the caller has provided an object distinct from anything g can produce."))
  ((name . ":generator-proc")
   (signature syntax-rules () ((_ generator-macro) procedure?))
-  (desc . "Constructs a generator procedure from a typed generator. Let (g var arg1 arg ...) be an instance of the <generator> syntax, for example an application-specific typed generator, with a single variable var and no index variable. Then 
+  (desc . "Constructs a generator procedure from a typed generator. Let (g var arg1 arg ...) be an instance of the <generator> syntax, for example an application-specific typed generator, with a single variable var and no index variable. Then
 (:generator-proc (g arg1 arg ...)) => g
 where the generator procedure g runs through the list (list-ec (g var arg1 arg ...) var)."))
  ((name . "dispatch-union")

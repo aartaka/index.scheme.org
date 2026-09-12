@@ -38,18 +38,17 @@
  ((name . "maybe-escaped")
   (signature
    case-lambda
-   (((string? str) (procedure? pred)) formatter)
-   (((string? str) (procedure? pred) (char? quote-ch)) formatter)
-   (((string? str) (procedure? pred) (char? quote-ch) (char? esc-ch))
+   (((string? str) (predicate pred)) formatter)
+   (((string? str) (predicate pred) (char? quote-ch)) formatter)
+   (((string? str) (predicate pred) (char? quote-ch) (char? esc-ch))
     formatter)
    (((string? str)
-     (procedure? pred)
+     (predicate pred)
      (char? quote-ch)
      (char? esc-ch)
      (procedure? renamer))
     formatter))
   (subsigs
-   (pred (lambda ((char? c)) boolean?))
    (renamer (lambda ((char? c)) char?)))
   (tags pure)
   (desc . "Like escaped, but first checks if any quoting is required (by the existence of either any quote or escape characters, or any character matching pred), and if so outputs the string in quotes and with escapes. Otherwise outputs the string as is. This is useful for quoting symbols and CSV output, etc."))

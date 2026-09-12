@@ -2,11 +2,11 @@
   (signature lambda (type-payload) (values procedure? procedure? procedure? procedure? procedure?))
   (desc . "(make-type type-payload) → type-accessor constructor predicate accessor make-subtype
 Calling make-type on type-payload, which can be any Scheme object, returns five values, all of which are procedures. They are distinct (in the sense of eqv?) from each other and from any other procedures returned by other calls to make-type. In brief, the five functions:
-    return type-payload 
-    return newly allocated objects of a disjoint type known as instances, each associated with an instance payload 
-    return #t iff an object is an instance of this type 
-    return the instance payload 
-    return five more procedures associated with a subtype of this type 
+    return type-payload
+    return newly allocated objects of a disjoint type known as instances, each associated with an instance payload
+    return #t iff an object is an instance of this type
+    return the instance payload
+    return five more procedures associated with a subtype of this type
 
 The type payload might contain metadata (such as field names or class variables) associated with the type as a whole.
 For the purposes of this section, we will suppose that

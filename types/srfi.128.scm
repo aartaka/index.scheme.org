@@ -13,13 +13,12 @@
  ((name . "make-comparator")
   (signature
    lambda
-   ((procedure? type-test)
+   ((predicate type-test)
     (procedure? equality)
     ((or procedure? #f) ordering)
     ((or procedure? #f) hash))
    comparator?)
   (subsigs
-   (type-test (lambda (obj) boolean?))
    (equality (lambda (obj1 obj2) boolean?))
    (ordering (lambda (obj1 obj2) boolean?))
    (hash (lambda (obj) integer?)))
@@ -40,13 +39,12 @@
   (signature
    lambda
    ((comparator? element-comparator)
-    (procedure? type-test)
+    (predicate type-test)
     (procedure? empty?)
     (procedure? head)
     (procedure? tail))
    comparator?)
   (subsigs
-   (type-test (lambda (obj) boolean?))
    (empty? (lambda (obj) boolean?))
    (head (lambda (obj) *))
    (tail (lambda (obj) *)))
@@ -62,12 +60,11 @@
   (signature
    lambda
    ((comparator? element-comparator)
-    (procedure? type-test)
+    (predicate type-test)
     (procedure? length)
     (procedure? ref))
    comparator?)
   (subsigs
-   (type-test (lambda (obj) boolean?))
    (length (lambda (obj) integer?))
    (ref (lambda (vec (integer? index)) *)))
   (tags pure)

@@ -10,18 +10,16 @@
     ((name . "string-every")
      (signature
        case-lambda
-       (((procedure? pred) (string? string)) *)
-       (((procedure? pred) (string? string) (integer? start)) *)
-       (((procedure? pred) (string? string) (integer? start) (integer? end)) *))
-     (subsigs (pred (lambda ((char? char)) *)))
+       (((predicate pred) (string? string)) *)
+       (((predicate pred) (string? string) (integer? start)) *)
+       (((predicate pred) (string? string) (integer? start) (integer? end)) *))
      (tags pure))
     ((name . "string-any")
      (signature
        case-lambda
-       (((procedure? pred) (string? string)) *)
-       (((procedure? pred) (string? string) (integer? start)) *)
-       (((procedure? pred) (string? string) (integer? start) (integer? end)) *))
-     (subsigs (pred (lambda ((char? char)) *)))
+       (((predicate pred) (string? string)) *)
+       (((predicate pred) (string? string) (integer? start)) *)
+       (((predicate pred) (string? string) (integer? start) (integer? end)) *))
      (tags pure)))
   (desc . "Checks to see if every/any character in string satisfies pred, proceeding from left (index start) to right (index end). These procedures are short-circuiting: if pred returns false, string-every does not call pred on subsequent characters; if pred returns true, string-any does not call pred on subsequent characters; Both procedures are \"witness-generating\":
 * If string-every is given an empty interval (with start = end), it returns #t.
@@ -43,15 +41,15 @@
  ((name . "string-unfold")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed)
     string?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (string? base))
     string?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -59,7 +57,6 @@
      (procedure? make-final))
     string?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (or char? string?)))
    (success (lambda (seed) *))
    (make-final (lambda (seed) (or char? string?))))
@@ -74,15 +71,15 @@
  ((name . "string-unfold-right")
   (signature
    case-lambda
-   (((procedure? stop?) (procedure? mapper) (procedure? successor) seed)
+   (((predicate stop?) (procedure? mapper) (procedure? successor) seed)
     string?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
      (string? base))
     string?)
-   (((procedure? stop?)
+   (((predicate stop?)
      (procedure? mapper)
      (procedure? successor)
      seed
@@ -90,7 +87,6 @@
      (procedure? make-final))
     string?))
   (subsigs
-   (stop? (lambda (seed) boolean?))
    (mapper (lambda (seed) (or char? string?)))
    (success (lambda (seed) *))
    (make-final (lambda (seed) (or char? string?))))
@@ -207,31 +203,28 @@ This is a common idiom in the epilogue of string-processing loops that accumulat
      (signature
        case-lambda
        (((string? string)) string?)
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-trim-right")
      (signature
        case-lambda
        (((string? string)) string?)
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-trim-both")
      (signature
        case-lambda
        (((string? string)) string?)
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "Returns a string obtained from the given subrange of string by skipping over all characters on the left side / on the right side / on both sides that satisfy the second argument pred: pred defaults to char-whitespace?."))
  ((name . "string-replace")
@@ -422,38 +415,34 @@ The optional start/end indexes restrict the comparison to the indicated substrin
     ((name . "string-index")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-index-right")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-skip")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-skip-right")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start)) (or #f integer?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start)) (or #f integer?))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (or #f integer?)))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "string-index searches through the given substring from the left, returning the index of the leftmost character satisfying the predicate pred. string-index-right searches from the right, returning the index of the rightmost character satisfying the predicate pred. If no match is found, these procedures return #f.
 The start and end arguments specify the beginning and end of the search; the valid indexes relevant to the search include start but exclude end. Beware of \"fencepost\" errors: when searching right-to-left, the first index considered is (- end 1), whereas when searching left-to-right, the first index considered is start. That is, the start/end indexes describe the same half-open interval [start,end) in these procedures that they do in all other procedures specified by this SRFI.
@@ -507,40 +496,36 @@ Returns #f if there is no match. If start2 = end2, string-contains returns start
     ((name . "string-take-while")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure))
     ((name . "string-take-while-right")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure)))
   (desc . "Returns the longest initial prefix/suffix of the substring of string specified by start and end whose elements all satisfy the predicate pred. (Not SRFI 13 procedures.)"))
  ((group
     ((name . "string-drop-while")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure))
     ((name . "string-drop-while-right")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) string?)
-       (((string? string) (procedure? pred) (integer? start)) string?)
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred)) string?)
+       (((string? string) (predicate pred) (integer? start)) string?)
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure)))
   (desc . "Drops the longest initial prefix/suffix of the substring of string specified by start and end whose elements all satisfy the predicate pred, and returns the rest of the string.
 These are the same as string-trim and string-trim-right, but with a different order of arguments. (Not SRFI 13 procedures.)"))
@@ -548,22 +533,20 @@ These are the same as string-trim and string-trim-right, but with a different or
     ((name . "string-span")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (values string? string?))
-       (((string? string) (procedure? pred) (integer? start))
+       (((string? string) (predicate pred)) (values string? string?))
+       (((string? string) (predicate pred) (integer? start))
         (values string? string?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (values string? string?)))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure))
     ((name . "string-break")
      (signature
        case-lambda
-       (((string? string) (procedure? pred)) (values string? string?))
-       (((string? string) (procedure? pred) (integer? start))
+       (((string? string) (predicate pred)) (values string? string?))
+       (((string? string) (predicate pred) (integer? start))
         (values string? string?))
-       (((string? string) (procedure? pred) (integer? start) (integer? end))
+       (((string? string) (predicate pred) (integer? start) (integer? end))
         (values string? string?)))
-     (subsigs (pred (lambda ((char? c)) boolean?)))
      (tags pure)))
   (desc . "String-span splits the substring of string specified by start and end into the longest initial prefix whose elements all satisfy pred, and the remaining tail. String-break inverts the sense of the predicate: the tail commences with the first element of the input string that satisfies the predicate. (Not SRFI 13 procedures.)
 In other words: span finds the initial span of elements satisfying pred, and break breaks the string at the first element satisfying pred."))
@@ -665,31 +648,28 @@ The string-for-each procedure applies proc element-wise to the characters of the
  ((name . "string-count")
   (signature
    case-lambda
-   (((string? string) (procedure? pred)) integer?)
-   (((string? string) (procedure? pred) (integer? start)) integer?)
-   (((string? string) (procedure? pred) (integer? start) (integer? end))
+   (((string? string) (predicate pred)) integer?)
+   (((string? string) (predicate pred) (integer? start)) integer?)
+   (((string? string) (predicate pred) (integer? start) (integer? end))
     integer?))
-  (subsigs (pred (lambda ((char? char)) boolean?)))
   (tags pure)
   (desc . "Returns a count of the number of characters in the specified substring of string that satisfy the given predicate."))
  ((group
     ((name . "string-filter")
      (signature
        case-lambda
-       (((procedure? pred) (string? string)) string?)
-       (((procedure? pred) (string? string) (integer? start)) string?)
-       (((procedure? pred) (string? string) (integer? start) (integer? end))
+       (((predicate pred) (string? string)) string?)
+       (((predicate pred) (string? string) (integer? start)) string?)
+       (((predicate pred) (string? string) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure))
     ((name . "string-remove")
      (signature
        case-lambda
-       (((procedure? pred) (string? string)) string?)
-       (((procedure? pred) (string? string) (integer? start)) string?)
-       (((procedure? pred) (string? string) (integer? start) (integer? end))
+       (((predicate pred) (string? string)) string?)
+       (((predicate pred) (string? string) (integer? start)) string?)
+       (((predicate pred) (string? string) (integer? start) (integer? end))
         string?))
-     (subsigs (pred (lambda ((char? char)) boolean?)))
      (tags pure)))
   (desc . "Filter the given substring of string, retaining only those characters that satisfy / do not satisfy pred.
 Compatibility note: In SRFI 13, string-remove is called string-delete. This is inconsistent with SRFI 1 and other SRFIs."))

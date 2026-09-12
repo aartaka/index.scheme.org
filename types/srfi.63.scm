@@ -3,12 +3,12 @@
   (tags pure predicate)
   (desc . "Returns #t if the obj is an array, and #f if not.
 Note: Arrays are not disjoint from other Scheme types. Vectors and possibly strings also satisfy array?."))
- ((name . "equal?") 
+ ((name . "equal?")
   (signature lambda (obj1 obj2) boolean?)
   (tags pure)
   (desc . "Returns #t if obj1 and obj2 have the same rank and dimensions and the corresponding elements of obj1 and obj2 are equal?.
 equal? recursively compares the contents of pairs, vectors, strings, and arrays, applying eqv? on other objects such as numbers and symbols. A rule of thumb is that objects are generally equal? if they print the same. equal? may fail to terminate if its arguments are circular data structures."))
- ((name . "array-rank") 
+ ((name . "array-rank")
   (signature lambda (obj) integer?)
   (tags pure)
   (desc . "Returns the number of dimensions of obj. If obj is not an array, 0 is returned."))
@@ -35,7 +35,7 @@ If the prototype has no elements, then the initial contents of the returned arra
   (signature lambda ((integer? rank) (array? proto) (list? list)) array?)
   (tags pure)
   (desc . "list must be a rank-nested list consisting of all the elements, in row-major order, of the array to be created."))
- ((name . "array->list") 
+ ((name . "array->list")
   (signature lambda ((array? array)) *)
   (tags pure)
   (desc . "Returns a rank-nested list consisting of all the elements, in row-major order, of array. In the case of a rank-0 array, array->list returns the single element."))
