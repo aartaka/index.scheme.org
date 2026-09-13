@@ -213,7 +213,7 @@
  ((srfi 99 records syntactic) . "types/srfi.99.records.syntactic.scm")
  ((srfi 100) . "types/srfi.100.scm")
  ((srfi 101) . "types/srfi.101.scm")
- ;; srfi 102 -- withdrawn
+ ((srfi 102) . "types/srfi.102.scm")
  ;; srfi 103 -- withdrawn
  ;; srfi 104 -- withdrawn
  ;; srfi 105 -- non-sexpr syntax
@@ -320,7 +320,7 @@
  ;; ((srfi 188) . "types/srfi.188.scm") TODO
  ;; ((srfi 189) . "types/srfi.189.scm") TODO
  ((srfi 190) . "types/srfi.190.scm")
- ;; srfi 191 -- withdrawn
+ ((srfi 191) . "types/srfi.191.scm")
  ;; ((srfi 192) . "types/srfi.192.scm") TODO
  ((srfi 193) . "types/srfi.193.scm")
  ;; ((srfi 194) . "types/srfi.194.scm") TODO
