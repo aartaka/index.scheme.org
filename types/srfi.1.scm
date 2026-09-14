@@ -24,10 +24,7 @@
   (tags pure)
   (desc . "Returns an n-element list. Element i of the list, where 0 <= i < n, is produced by (init-proc i). No guarantee is made about the dynamic order in which init-proc is applied to these indices."))
  ((name . "list-copy")
-  (signature
-   case-lambda
-   (((list? flist)) list?)
-   (((dotted-list? flist)) dotted-list?))
+  (signature lambda (((or list? dotted-list?) flist)) (or list? dotted-list?))
   (tags pure)
   (desc . "Copies the spine of the argument."))
  ((name . "circular-list")
@@ -63,10 +60,7 @@
   (tags pure predicate)
   (desc . "Returns #t if object is the empty list; otherwise, #f."))
  ((name . "null-list?")
-  (signature
-   case-lambda
-   (((list? lst)) boolean?)
-   (((circular-list? lst)) boolean?))
+  (signature lambda (((or list? circular-list?) lst)) boolean?)
   (tags pure predicate)
   (desc . "List is a proper or circular list. This procedure returns true if the argument is the empty list (), and false otherwise. It is an error to pass this procedure a value which is not a proper or circular list. This procedure is recommended as the termination condition for list-processing procedures that are not defined on dotted lists."))
  ((name . "not-pair?")
@@ -111,10 +105,7 @@
           ((name . "cdddr") (signature lambda ((pair? pair)) *) (tags pure)))
   (desc . "These procedures are compositions of car and cdr, where for example caddr could be defined by (define caddr (lambda (x) (car (cdr (cdr x)))))."))
  ((name . "list-ref")
-  (signature
-   case-lambda
-   (((list? clist) (integer? i)) *)
-   (((circular-list? clist) (integer? i)) *))
+  (signature lambda (((or list? circular-list?) clist) (integer? i)) *)
   (tags pure)
   (desc . "Returns the ith element of clist. (This is the same as the car of (drop clist i).) It is an error if i >= n, where n is the length of clist."))
  ((group
@@ -134,11 +125,7 @@
   (tags pure)
   (desc . "The fundamental pair deconstructor: (lambda (p) (values (car p) (cdr p)))"))
  ((group ((name . "take")
-          (signature
-           case-lambda
-           (((list? x) (integer? i)) list?)
-           (((circular-list? x) (integer? i)) list?)
-           (((dotted-list? x) (integer? i)) list?))
+          (signature lambda (((or list? circular-list? dotted-list?) x) (integer? i)) list?)
           (tags pure))
          ((name . "drop")
           (signature
@@ -155,23 +142,13 @@
            (((dotted-list? flist) (integer? i)) *))
           (tags pure))
          ((name . "drop-right")
-          (signature
-           case-lambda
-           (((list? flist) (integer? i)) list?)
-           (((dotted-list? flist) (integer? i)) list?))
+          (signature lambda (((or list? dotted-list?) flist) (integer? i)) list?)
           (tags pure)))
   (desc . "take-right returns the last i elements of flist. drop-right returns all but the last i elements of flist.  The returned list may share a common tail with the argument list. flist may be any finite list, either proper or dotted.  For a legal i, take-right and drop-right partition the list in a manner which can be inverted with append: (append (take flist i) (drop flist i)) = flist. take-right's return value is guaranteed to share a common tail with flist. If the argument is a list of non-zero length, drop-right is guaranteed to return a freshly-allocated list, even in the case where nothing is dropped, e.g. (drop-right lis 0)."))
  ((group ((name . "take!")
-          (signature
-           case-lambda
-           (((list? x) (integer? i)) list?)
-           (((circular-list? x) (integer? i)) list?)
-           (((dotted-list? x) (integer? i)) list?)))
+          (signature lambda (((or list? circular-list? dotted-list?) x) (integer? i)) list?))
          ((name . "drop-right!")
-          (signature
-           case-lambda
-           (((list? flist) (integer? i)) list?)
-           (((dotted-list? flist) (integer? i)) list?))))
+          (signature lambda (((or list? dotted-list?) flist) (integer? i)) list?)))
   (desc . "take! and drop-right! are \"linear-update\" variants of take and drop-right: the procedure is allowed, but not required, to alter the argument list to produce the result. If x is circular, take! may return a shorter-than-expected list"))
  ((group ((name . "split-at")
           (signature
