@@ -153,7 +153,7 @@ On the example of SRFIs:
 * Add `((srfi ???) . #t)` to `filters/r7rs-portable.scm`
 * (Optionally) add `((srfi ???) . #t)` to `filters/r6rs-portable.scm`
 * Add `((srfi ???) . "types/srfi.???.scm")` to types/index.scm
-* Create a `types/srfi.???.scm` file and add entries for each provided API (see the format above)
+* Create a `types/srfi.???.scm` file and add entries for each provided API (see the format above.) As an additional reference for advanced patterns, see `types/srfi.1.scm` (for procedures) and `types/srfi.253.scm` (for macros.)
 * If you use some non-predicate type, add its `(name . "description")` to `types/faux-types.scm`
 * Go to `scheme-index-util/` and run  `validatedata-native.sh` (if you have Chicken installed,) `validatedata-docker.sh` (if you have Docker installed)
 * Fix the highlighted errors
